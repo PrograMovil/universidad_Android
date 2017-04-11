@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        View.OnClickListener {
 
     Button button;
     TextView outputText;
@@ -30,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
         button = (Button) findViewById(R.id.goServlet);
         outputText = (TextView) findViewById(R.id.helloServlet);
 
+        button.setOnClickListener(this);
 
     }
 
-    public void callServlet(){
+    public void onClick(View v) {
         GetXMLTask task = new GetXMLTask();
-        task.execute(new String[] { URL + "?action=Testing" });
+        String url = URL + "?action=Testing";
+        Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+        task.execute(new String[] { url });
     }
 
     public class GetXMLTask extends AsyncTask<String, Void, String> {

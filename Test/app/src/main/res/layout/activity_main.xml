@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
         android:text="Hello Servlet"
-        android:onClick="callServlet"
         />
 
     <TextView
