@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Matriculadores"
+            android:id="@+id/nav_matriculadores"
+            android:icon="@drawable/astronaut" />
+        <item android:title="Estudiantes"
+            android:id="@+id/nav_estudiantes"
+            android:icon="@drawable/estudiante" />
+        <item
+            android:id="@+id/nav_profesores"
+            android:title="Profesores"
+            android:icon="@drawable/profesor" />
+        <item
+            android:id="@+id/nav_carreras"
+            android:title="Carreras"
+            android:icon="@drawable/diplomao" />
+        <item
+            android:id="@+id/nav_cursos"
+            android:title="Cursos"
+            android:icon="@drawable/books" />
+        <item
+            android:id="@+id/nav_grupos"
+            android:title="Grupos"
+            android:icon="@drawable/classroom" />
+        <item android:title="Ciclos Lectivos"
+            android:id="@+id/nav_ciclo" />
+    </group>
+
+</menu>
