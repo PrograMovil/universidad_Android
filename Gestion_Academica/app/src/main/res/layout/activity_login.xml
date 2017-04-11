@@ -50,7 +50,7 @@
             android:id="@+id/cedula"
             android:layout_weight="1"
             android:textAlignment="textStart"
-            android:inputType="number" />
+            android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>
 

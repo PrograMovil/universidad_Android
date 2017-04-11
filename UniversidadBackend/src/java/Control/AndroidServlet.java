@@ -78,10 +78,10 @@ public class AndroidServlet extends HttpServlet {
         //        Acciones
         if(accion != null){
             try{
+                PrintWriter out = response.getWriter();
                 switch (accion) {
                     
                     case "Testing": {
-                        PrintWriter out = response.getWriter();
                         out.println("Hello Android !!!!");
                     }
                     break;
@@ -89,23 +89,24 @@ public class AndroidServlet extends HttpServlet {
                         String id = request.getParameter("id");
                         String pass = request.getParameter("password");
                         int tipoUsuario = ctrl.verificaUsuario(id, pass);
+                        System.out.println("El tipo del usuatio es: "+tipoUsuario);
                         if(tipoUsuario != 0){
-                            session.setAttribute("userId", id);
                             switch(tipoUsuario){ 
                                 case 1: //ADMINISTRADOR                                
                                     System.out.println("Es administrador");                                
-                                    
+                                    out.println("Es administrador, en Android");
                                     break;
                                 case 2: //MATRICULADOR
                                     System.out.println("Es matriculador");
-                                    
+                                    out.println("Es matriculador, en Android");
                                     break;
                                 case 3: //PROFESOR
                                     System.out.println("Es profesor");
-                                    
+                                    out.println("Es profesor, en Android");
                                     break;
                                 case 4: //ESTUDIANTE
                                     System.out.println("Es estudiante");
+                                    out.println("Es estudiante, en Android");
                                     
                                     break;
                             }
