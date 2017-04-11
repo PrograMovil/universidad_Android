@@ -79,7 +79,12 @@ public class AndroidServlet extends HttpServlet {
         if(accion != null){
             try{
                 switch (accion) {
-
+                    
+                    case "Testing": {
+                        PrintWriter out = response.getWriter();
+                        out.println("Hello Android !!!!");
+                    }
+                    break;
                     case "Ingresar": {
                         String id = request.getParameter("id");
                         String pass = request.getParameter("password");

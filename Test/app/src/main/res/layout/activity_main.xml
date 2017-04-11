@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.sheshovega.test.MainActivity"
+    android:weightSum="1">
+
+
+    <Button
+        android:id="@+id/goServlet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:text="Hello Servlet"
+        android:onClick="callServlet"
+        />
+
+    <TextView
+        android:id="@+id/helloServlet"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Hey!"
+        android:textAlignment="center" />
+
+</LinearLayout>
