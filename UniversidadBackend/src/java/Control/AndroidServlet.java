@@ -41,6 +41,10 @@ public class AndroidServlet extends HttpServlet {
         public SuccessMsg(String msg) {
             this.msg = msg;
         }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
         
     }
     
@@ -50,6 +54,10 @@ public class AndroidServlet extends HttpServlet {
         String msg;
 
         public ErrorMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public void setMsg(String msg) {
             this.msg = msg;
         }
         
@@ -72,11 +80,14 @@ public class AndroidServlet extends HttpServlet {
         String accion = request.getParameter("action");
                 
 //        Listas de Objetos
-        ArrayList<Carrera> carreras = null;
+        ArrayList<Carrera> carreras = new ArrayList<Carrera>();
+        ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+        ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+        ArrayList<Curso> cursos = new ArrayList<Curso>();
+        
+        
         ArrayList<Carrera> allCarreras = null;
-        ArrayList<Profesor> profesores = null;
-        ArrayList<Estudiante> estudiantes = null;
-        ArrayList<Curso> cursos = null;
+        
         Curso cursoCurrent = null;
         ArrayList<Grupo> grupos = null;
         ArrayList<Profesor> allProfesores = null;
@@ -88,13 +99,8 @@ public class AndroidServlet extends HttpServlet {
         Ciclo cicloDefault = null;;
         
         Control ctrl = new Control();
-        
-        carreras = ctrl.obtenerTodasCarreras();
-//        profesores = ctrl.obtenerTodosLosProfesores();
-//        estudiantes = ctrl.obtenerTodosLosEstudiantes();
-//        cursos = ctrl.obtenerTodosLosCursos();
-//        cicloDefault = ctrl.obtenerCicloActivo();
-        
+        ErrorMsg error = new ErrorMsg("");
+        SuccessMsg success = new SuccessMsg("");
         //        Acciones
         if(accion != null){
             try{
@@ -136,7 +142,7 @@ public class AndroidServlet extends HttpServlet {
                                     break;
                             }
                         }else{
-                            ErrorMsg error = new ErrorMsg("ERROR: Identificación o Contraseña Incorrecta!");
+                            error.setMsg("ERROR: Identificación o Contraseña Incorrecta!");
                             response.getWriter().write(gson.toJson(error));
                         }
                     }
@@ -147,10 +153,10 @@ public class AndroidServlet extends HttpServlet {
                         String titulo = request.getParameter("titulo");
                         Carrera ca = new Carrera(codigo,nombre,titulo);
                         if(ctrl.addCarrera(ca) == 1){
-                            SuccessMsg success = new SuccessMsg("Carrera Arregada!");
+                            success.setMsg("Carrera Arregada!");
                             response.getWriter().write(gson.toJson(success));
                         }else{
-                            ErrorMsg error = new ErrorMsg("ERROR: Carrera NO Agregada!");
+                            error.setMsg("ERROR: Carrera NO Agregada!");
                             response.getWriter().write(gson.toJson(error));
                         }
                     }
@@ -161,7 +167,7 @@ public class AndroidServlet extends HttpServlet {
                         if(codigo != "" && nombre == ""){
                             Carrera ca;
                             if((ca = ctrl.getCarrera(codigo)) == null){
-                                ErrorMsg error = new ErrorMsg("ERROR: Carrera NO Encontrada!");
+                                error.setMsg("ERROR: Carrera NO Encontrada!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
                                 response.getWriter().write(gson.toJson(ca));                                
@@ -170,7 +176,12 @@ public class AndroidServlet extends HttpServlet {
                         }else if(nombre != "" && codigo == ""){
                             carreras.clear();
                             carreras = ctrl.obtenerCarreraPorNombre(nombre);
-                            response.getWriter().write(gson.toJson(carreras));
+                            if(carreras.size() == 0){
+                                error.setMsg("ERROR: Carreras NO Encontradas!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(carreras));
+                            }                            
                         }else if(nombre == "" && codigo == ""){
                             carreras.clear();
                             carreras = ctrl.obtenerTodasCarreras();                            
@@ -185,253 +196,239 @@ public class AndroidServlet extends HttpServlet {
                         Carrera ca = new Carrera(codigo,nombre,titulo);
                         System.out.println(ca.toString());
                         if(ctrl.updateCarrera(ca) == 1){
-                            SuccessMsg success = new SuccessMsg("Carrera Actualizada!");
+                            success.setMsg("Carrera Actualizada!");
                             response.getWriter().write(gson.toJson(success));
                         }else{
-                            ErrorMsg error = new ErrorMsg("ERROR: Carrera NO Actualizada!");
+                            error.setMsg("ERROR: Carrera NO Actualizada!");
                             response.getWriter().write(gson.toJson(error));
                         }
                     }
                     break;
-//                    case "AgregarProfesor": {
-//                        String cedula = request.getParameter("cedula");
-//                        String nombre = request.getParameter("nombre");
-//                        String telefono = request.getParameter("telefono");
-//                        String email = request.getParameter("email");
-//                        String password = request.getParameter("password");
-//                        Usuario user = new Usuario(cedula,password,3);
-//                        Profesor profe = new Profesor(user,nombre,cedula,telefono,email);
-//                        if(ctrl.addProfesor(profe) == 1){
-//                            profesores = ctrl.obtenerTodosLosProfesores();
-//                            session.setAttribute("profesores", profesores);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminProfesores.jsp");
-//                        }else{
-//                            String errores = "ERROR: Profesor NO Agregado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminProfesores.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "BuscarProfesor": {
-//                        String cedula = request.getParameter("cedula");
-//                        String nombre = request.getParameter("nombre");
-//                        if(cedula != "" && nombre == ""){
-//                            Profesor pro;
-//                            if((pro = ctrl.getProfesor(cedula)) == null){
-//                                profesores.clear();
-//                                session.setAttribute("profesores", profesores);
-//                                response.sendRedirect("adminProfesores.jsp");
-//                            }else{
-//                                profesores.clear();
-//                                profesores.add(pro);                        
-//                                session.setAttribute("profesores", profesores);
-//                                response.sendRedirect("adminProfesores.jsp");
-//                            }
-//
-//                        }else if(nombre != "" && cedula == ""){
-//                            profesores.clear();
-//                            profesores = ctrl.obtenerProfesoresPorNombre(nombre);
-//                            session.setAttribute("profesores", profesores);
-//                            response.sendRedirect("adminProfesores.jsp");  
-//                        }else if(nombre == "" && cedula == ""){
-//                            profesores.clear();
-//                            profesores = ctrl.obtenerTodosLosProfesores();
-//                            session.setAttribute("profesores", profesores);
-//                            response.sendRedirect("adminProfesores.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "EditarProfesor":{
-//                        String cedula = request.getParameter("cedula");
-//                        String nombre = request.getParameter("nombre");
-//                        String telefono = request.getParameter("telefono");
-//                        String email = request.getParameter("email");
-//                        String password = request.getParameter("password");
-//                        Usuario user = new Usuario(cedula,password,3);
-//                        Profesor profe = new Profesor(user,nombre,cedula,telefono,email);
-//                        System.out.println(profe.toString());
-//                        if(ctrl.updateProfesor(profe) == 1){
-//                            profesores.clear();
-//                            profesores = ctrl.obtenerTodosLosProfesores();
-//                            session.setAttribute("profesores", profesores);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminProfesores.jsp");
-//                        }else{
-//                            String errores = "ERROR: Profesor NO Actualizado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminProfesores.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "AgregarEstudiante": {
-//                        String cedula = request.getParameter("cedula");
-//                        String fechaNacString = request.getParameter("fechaNac");
-//                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//                        Calendar cal = Calendar.getInstance();
-//                        cal.setTime(sdf.parse(fechaNacString));
-//                        String nombre = request.getParameter("nombre");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        String telefono = request.getParameter("telefono");
-//                        String email = request.getParameter("email");
-//                        String password = request.getParameter("password");
-//                        Usuario user = new Usuario(cedula,password,4);
-//                        Carrera carrera = ctrl.getCarrera(idCarrera);
-//                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
-//                        if(ctrl.addEstudiante(es) == 1){
-//                            estudiantes = ctrl.obtenerTodosLosEstudiantes();
-//                            session.setAttribute("estudiantes", estudiantes);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminEstudiantes.jsp");
-//                        }else{
-//                            String errores = "ERROR: Estudiante NO Agregado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminEstudiantes.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "EditarEstudiante": {
-//                        String cedula = request.getParameter("cedula");
-//                        String fechaNacString = request.getParameter("fechaNac");
-//                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//                        Calendar cal = Calendar.getInstance();
-//                        cal.setTime(sdf.parse(fechaNacString));
-//                        String nombre = request.getParameter("nombre");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        String telefono = request.getParameter("telefono");
-//                        String email = request.getParameter("email");
-//                        String password = request.getParameter("password");
-//                        Usuario user = new Usuario(cedula,password,4);
-//                        Carrera carrera = ctrl.getCarrera(idCarrera);
-//                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
-//                        if(ctrl.updateEstudiante(es) == 1){
-//                            estudiantes = ctrl.obtenerTodosLosEstudiantes();
-//                            session.setAttribute("estudiantes", estudiantes);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminEstudiantes.jsp");
-//                        }else{
-//                            String errores = "ERROR: Estudiante NO Actualizado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminEstudiantes.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "BuscarEstudiante": {
-//                        String cedula = request.getParameter("cedula");
-//                        String nombre = request.getParameter("nombre");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        if(cedula != "" && nombre == "" && idCarrera == ""){
-//                            Estudiante es;
-//                            if((es = ctrl.getEstudiante(cedula)) == null){
-//                                estudiantes.clear();
-//                                session.setAttribute("estudiantes", estudiantes);
-//                                response.sendRedirect("adminEstudiantes.jsp");
-//                            }else{
-//                                estudiantes.clear();
-//                                estudiantes.add(es);                        
-//                                session.setAttribute("estudiantes", estudiantes);
-//                                response.sendRedirect("adminEstudiantes.jsp");
-//                            }
-//                        }else if(nombre != "" && cedula == "" && idCarrera == ""){
-//                            estudiantes.clear();
-//                            estudiantes = ctrl.obtenerEstudiantePorNombre(nombre);
-//                            session.setAttribute("estudiantes", estudiantes);
-//                            response.sendRedirect("adminEstudiantes.jsp");  
-//                        }else if(idCarrera != "" && nombre == "" && cedula == ""){
-//                            estudiantes.clear();
-//                            Carrera ca = ctrl.getCarrera(idCarrera);
-//                            estudiantes = ctrl.obtenerEstudiantesPorCarrera(ca);
-//                            session.setAttribute("estudiantes", estudiantes);
-//                            response.sendRedirect("adminEstudiantes.jsp");  
-//                        }else if(nombre == "" && cedula == "" && idCarrera == ""){
-//                            estudiantes.clear();
-//                            estudiantes = ctrl.obtenerTodosLosEstudiantes();
-//                            session.setAttribute("estudiantes", estudiantes);
-//                            response.sendRedirect("adminEstudiantes.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "AgregarCurso": {
-//                        String codigo = request.getParameter("codigo");
-//                        String nombre = request.getParameter("nombre");
-//                        String creditos = request.getParameter("creditos");
-//                        String horasSemanales = request.getParameter("horasSemanales");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        String nivel = request.getParameter("nivel");
-//                        String ciclo = request.getParameter("ciclo");
-//                        Carrera ca = ctrl.getCarrera(idCarrera);
-//                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
-//                        cu.setCiclo(ciclo);
-//                        if(ctrl.addCurso(cu) == 1){
-//                            cursos = ctrl.obtenerTodosLosCursos();
-//                            session.setAttribute("cursos", cursos);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminCursos.jsp");
-//                        }else{
-//                            String errores = "ERROR: Curso NO Agregado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminCursos.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "EditarCurso": {
-//                        String codigo = request.getParameter("codigo");
-//                        String nombre = request.getParameter("nombre");
-//                        String creditos = request.getParameter("creditos");
-//                        String horasSemanales = request.getParameter("horasSemanales");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        String nivel = request.getParameter("nivel");
-//                        String ciclo = request.getParameter("ciclo");
-//                        Carrera ca = ctrl.getCarrera(idCarrera);
-//                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
-//                        cu.setCiclo(ciclo);
-//                        if(ctrl.updateCurso(cu) == 1){
-//                            cursos = ctrl.obtenerTodosLosCursos();
-//                            session.setAttribute("cursos", cursos);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminCursos.jsp");
-//                        }else{
-//                            String errores = "ERROR: Curso NO Actualizado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminCursos.jsp");
-//                        }
-//                    }
-//                    break;
-//                    case "BuscarCurso": {
-//                        String codigo = request.getParameter("codigo");
-//                        String nombre = request.getParameter("nombre");
-//                        String idCarrera = request.getParameter("idCarrera");
-//                        if(codigo != "" && nombre == "" && idCarrera == ""){
-//                            Curso cu;
-//                            if((cu = ctrl.getCurso(codigo)) == null){
-//                                cursos.clear();
-//                                session.setAttribute("cursos", cursos);
-//                                response.sendRedirect("adminCursos.jsp");
-//                            }else{
-//                                cursos.clear();
-//                                cursos.add(cu);                        
-//                                session.setAttribute("cursos", cursos);
-//                                response.sendRedirect("adminCursos.jsp");
-//                            }
-//                        }else if(nombre != "" && codigo == "" && idCarrera == ""){
-//                            cursos.clear();
-//                            cursos = ctrl.getCursoPorNombre(nombre);
-//                            session.setAttribute("cursos", cursos);
-//                            response.sendRedirect("adminCursos.jsp");  
-//                        }else if(idCarrera != "" && nombre == "" && codigo == ""){
-//                            cursos.clear();
-//                            Carrera ca = ctrl.getCarrera(idCarrera);
-//                            cursos = ctrl.getCursoPorCarrera(ca);
-//                            session.setAttribute("cursos", cursos);
-//                            response.sendRedirect("adminCursos.jsp");  
-//                        }else if(nombre == "" && codigo == "" && idCarrera == ""){
-//                            cursos.clear();
-//                            cursos = ctrl.obtenerTodosLosCursos();
-//                            session.setAttribute("cursos", cursos);
-//                            response.sendRedirect("adminCursos.jsp");
-//                        }
-//                    }
-//                    break;
+                    case "AgregarProfesor": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,3);
+                        Profesor profe = new Profesor(user,nombre,cedula,telefono,email);
+                        if(ctrl.addProfesor(profe) == 1){
+                            success.setMsg("Profesor Arregada!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Profesor NO Agregado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "BuscarProfesor": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        if(cedula != "" && nombre == ""){
+                            Profesor pro;
+                            if((pro = ctrl.getProfesor(cedula)) == null){
+                                error.setMsg("ERROR: Profesor NO Encontrado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(pro));
+                            }
+
+                        }else if(nombre != "" && cedula == ""){
+                            profesores.clear();
+                            profesores = ctrl.obtenerProfesoresPorNombre(nombre);
+                            if(profesores.size() == 0){
+                                error.setMsg("ERROR: Profesores NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(profesores));
+                            }  
+                        }else if(nombre == "" && cedula == ""){
+                            profesores.clear();
+                            profesores = ctrl.obtenerTodosLosProfesores();
+                            response.getWriter().write(gson.toJson(profesores));
+                        }
+                    }
+                    break;
+                    case "EditarProfesor":{
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,3);
+                        Profesor profe = new Profesor(user,nombre,cedula,telefono,email);
+                        System.out.println(profe.toString());
+                        if(ctrl.updateProfesor(profe) == 1){
+                            success.setMsg("Profesor Actualizado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Profesor NO Actualizado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "AgregarEstudiante": {
+                        String cedula = request.getParameter("cedula");
+                        String fechaNacString = request.getParameter("fechaNac");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(sdf.parse(fechaNacString));
+                        String nombre = request.getParameter("nombre");
+                        String idCarrera = request.getParameter("idCarrera");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,4);
+                        Carrera carrera = ctrl.getCarrera(idCarrera);
+                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
+                        if(ctrl.addEstudiante(es) == 1){
+                            success.setMsg("Estudiante Arregado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Estudiante NO Agregado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "EditarEstudiante": {
+                        String cedula = request.getParameter("cedula");
+                        String fechaNacString = request.getParameter("fechaNac");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(sdf.parse(fechaNacString));
+                        String nombre = request.getParameter("nombre");
+                        String idCarrera = request.getParameter("idCarrera");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,4);
+                        Carrera carrera = ctrl.getCarrera(idCarrera);
+                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
+                        if(ctrl.updateEstudiante(es) == 1){
+                            success.setMsg("Estudiante Actualizado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Estudiante NO Actualizado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "BuscarEstudiante": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String idCarrera = request.getParameter("idCarrera");
+                        if(cedula != "" && nombre == "" && idCarrera == ""){
+                            Estudiante es;
+                            if((es = ctrl.getEstudiante(cedula)) == null){
+                                error.setMsg("ERROR: Estudiante NO Encontrado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(es));
+                            }
+                        }else if(nombre != "" && cedula == "" && idCarrera == ""){
+                            estudiantes.clear();
+                            estudiantes = ctrl.obtenerEstudiantePorNombre(nombre);
+                            if(estudiantes.size() == 0){
+                                error.setMsg("ERROR: Estudiantes NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(estudiantes));
+                            }  
+                        }else if(idCarrera != "" && nombre == "" && cedula == ""){
+                            estudiantes.clear();
+                            Carrera ca = ctrl.getCarrera(idCarrera);
+                            estudiantes = ctrl.obtenerEstudiantesPorCarrera(ca);
+                            if(estudiantes.size() == 0){
+                                error.setMsg("ERROR: Estudiantes NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(estudiantes));
+                            }  
+                        }else if(nombre == "" && cedula == "" && idCarrera == ""){
+                            estudiantes.clear();
+                            estudiantes = ctrl.obtenerTodosLosEstudiantes();
+                            response.getWriter().write(gson.toJson(estudiantes));
+                        }
+                    }
+                    break;
+                    case "AgregarCurso": {
+                        String codigo = request.getParameter("codigo");
+                        String nombre = request.getParameter("nombre");
+                        String creditos = request.getParameter("creditos");
+                        String horasSemanales = request.getParameter("horasSemanales");
+                        String idCarrera = request.getParameter("idCarrera");
+                        String nivel = request.getParameter("nivel");
+                        String ciclo = request.getParameter("ciclo");
+                        Carrera ca = ctrl.getCarrera(idCarrera);
+                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
+                        cu.setCiclo(ciclo);
+                        if(ctrl.addCurso(cu) == 1){
+                            success.setMsg("Curso Agregado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Curso NO Agregado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "EditarCurso": {
+                        String codigo = request.getParameter("codigo");
+                        String nombre = request.getParameter("nombre");
+                        String creditos = request.getParameter("creditos");
+                        String horasSemanales = request.getParameter("horasSemanales");
+                        String idCarrera = request.getParameter("idCarrera");
+                        String nivel = request.getParameter("nivel");
+                        String ciclo = request.getParameter("ciclo");
+                        Carrera ca = ctrl.getCarrera(idCarrera);
+                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
+                        cu.setCiclo(ciclo);
+                        if(ctrl.updateCurso(cu) == 1){
+                            success.setMsg("Curso Actualizado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Curso NO Actualizado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "BuscarCurso": {
+                        String codigo = request.getParameter("codigo");
+                        String nombre = request.getParameter("nombre");
+                        String idCarrera = request.getParameter("idCarrera");
+                        if(codigo != "" && nombre == "" && idCarrera == ""){
+                            Curso cu;
+                            if((cu = ctrl.getCurso(codigo)) == null){
+                                error.setMsg("ERROR: Curso NO Encontrado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(cu));
+                            }
+                        }else if(nombre != "" && codigo == "" && idCarrera == ""){
+                            cursos.clear();
+                            cursos = ctrl.getCursoPorNombre(nombre);
+                            if(estudiantes.size() == 0){
+                                error.setMsg("ERROR: Estudiantes NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(cursos));
+                            }   
+                        }else if(idCarrera != "" && nombre == "" && codigo == ""){
+                            cursos.clear();
+                            Carrera ca = ctrl.getCarrera(idCarrera);
+                            cursos = ctrl.getCursoPorCarrera(ca);
+                            if(estudiantes.size() == 0){
+                                error.setMsg("ERROR: Estudiantes NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(cursos));
+                            }
+                        }else if(nombre == "" && codigo == "" && idCarrera == ""){
+                            cursos.clear();
+                            cursos = ctrl.obtenerTodosLosCursos();
+                            response.getWriter().write(gson.toJson(cursos));
+                        }
+                    }
+                    break;
 //                    case "AgregarGrupo": {
 //                        String idCurso = request.getParameter("idCurso");
 //                        String numeroCiclo = request.getParameter("numeroCiclo");
