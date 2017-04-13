@@ -1,0 +1,5 @@
+0= no se encontro en la base
+1= Admin
+2= Profesor
+3= Matriculador
+4= Estudiante

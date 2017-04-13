@@ -13,7 +13,6 @@ import LogicaNegocio.Grupo;
 import LogicaNegocio.Horario;
 import LogicaNegocio.Profesor;
 import LogicaNegocio.Usuario;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -66,8 +65,8 @@ public class AndroidServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        Gson gson = new Gson();
+        response.setContentType("text/html;charset=UTF-8");
+        
 //        Define cual es la accion que se va a realizar
         String accion = request.getParameter("action");
                 
@@ -111,28 +110,24 @@ public class AndroidServlet extends HttpServlet {
                         String pass = request.getParameter("password");
                         int tipoUsuario = ctrl.verificaUsuario(id, pass);
                         System.out.println("El tipo del usuatio es: "+tipoUsuario);
-                        Usuario user;
                         if(tipoUsuario != 0){
                             switch(tipoUsuario){ 
                                 case 1: //ADMINISTRADOR                                
-                                    System.out.println("Es administrador");     
-                                    user = new Usuario(id,pass,tipoUsuario);
-                                    response.getWriter().write(gson.toJson(user));
+                                    System.out.println("Es administrador");                                
+                                    out.println("Es administrador, en Android");
                                     break;
                                 case 2: //MATRICULADOR
                                     System.out.println("Es matriculador");
-                                    user = new Usuario(id,pass,tipoUsuario);
-                                    response.getWriter().write(gson.toJson(user));
+                                    out.println("Es matriculador, en Android");
                                     break;
                                 case 3: //PROFESOR
                                     System.out.println("Es profesor");
-                                    user = new Usuario(id,pass,tipoUsuario);
-                                    response.getWriter().write(gson.toJson(user));
+                                    out.println("Es profesor, en Android");
                                     break;
                                 case 4: //ESTUDIANTE
                                     System.out.println("Es estudiante");
-                                    user = new Usuario(id,pass,tipoUsuario);
-                                    response.getWriter().write(gson.toJson(user));                                    
+                                    out.println("Es estudiante, en Android");
+                                    
                                     break;
                             }
                         }else{

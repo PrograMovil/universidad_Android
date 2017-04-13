@@ -1,9 +1,8 @@
 package com.gestion_academica;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,14 +12,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Inicio extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Inicio extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    NavigationView navigationView=null;
+    Toolbar toolbar=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //setear el fragment inicial
+        MainFragment fragment=new MainFragment();
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frament_container, fragment);
+        fragmentTransaction.commit();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -30,7 +40,7 @@ public class Inicio extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -84,6 +94,11 @@ public class Inicio extends AppCompatActivity
             };break;
             case R.id.nav_estudiantes:{
 
+                FragmentEstudiantes fragment=new FragmentEstudiantes();
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
+                //fragmentTransaction.commit();
+
             };break;
             case R.id.nav_profesores:{
 
@@ -100,5 +115,10 @@ public class Inicio extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void switchContent(Fragment fragment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frament_container, fragment);
+        fragmentTransaction.commit();
     }
 }
