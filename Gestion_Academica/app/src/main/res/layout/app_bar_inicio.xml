@@ -18,11 +18,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Gestion Academica" />
+            app:title="Gestion Academica"
+
+            />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_inicio" />
+    <FrameLayout
+        android:id="@+id/frament_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

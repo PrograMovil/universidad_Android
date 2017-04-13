@@ -79,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("Resultao del Login: "+ valueResult);
 
                 result = valueResult;
+                Intent intent=new Intent(LoginActivity.this,Inicio.class);
+                LoginActivity.this.startActivity(intent);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

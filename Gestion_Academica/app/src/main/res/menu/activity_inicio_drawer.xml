@@ -24,8 +24,10 @@
             android:id="@+id/nav_grupos"
             android:title="Grupos"
             android:icon="@drawable/classroom" />
-        <item android:title="Ciclos Lectivos"
-            android:id="@+id/nav_ciclo" />
+        <item
+            android:id="@+id/nav_ciclo"
+            android:icon="@drawable/roman_number"
+            android:title="Ciclos Lectivos" />
     </group>
 
 </menu>
