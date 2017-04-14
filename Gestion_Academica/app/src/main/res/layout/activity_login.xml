@@ -1,69 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gestion_academica.LoginActivity"
-    android:orientation="vertical">
+    tools:context="com.gestion_academica.LoginActivity">
 
 
-
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textInputLayout">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:hint="Contraseña"
-            android:id="@+id/contrasena"
-            android:inputType="textPassword"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"
-            android:layout_centerHorizontal="true"
-            android:textAlignment="textStart" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
+        android:orientation="vertical"
+        android:layout_marginTop="47dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <EditText
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/Cedula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cedula"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/contrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="iniciar"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Cedula"
-            android:textSize="18sp"
-            android:id="@+id/cedula"
-            android:layout_weight="1"
-            android:textAlignment="textStart"
-            android:inputType="text" />
+            android:layout_marginTop="16dp"
+            android:text="Iniciar Sesion"
+            android:textStyle="bold" />
 
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:text="Iniciar Sesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="73dp"
-        android:id="@+id/btnLogin"
-        android:layout_weight="1"
-        android:layout_below="@+id/textInputLayout"
-        android:layout_centerHorizontal="true"
-        android:onClick="iniciarSesion"/>
-
+    </LinearLayout>
 
 </RelativeLayout>

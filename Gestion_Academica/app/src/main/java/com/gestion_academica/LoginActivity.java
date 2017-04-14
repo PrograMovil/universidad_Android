@@ -7,9 +7,14 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -24,8 +29,8 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText username;
-    EditText password;
+    AutoCompleteTextView username;
+    EditText mpassword;
     Button loginBtn;
     String urlRequest;
     String result = "";
@@ -40,17 +45,40 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent=new Intent(LoginActivity.this,Inicio.class);
             LoginActivity.this.startActivity(intent);
         }
+
+        username = (AutoCompleteTextView) findViewById(R.id.Cedula);
+        mpassword = (EditText) findViewById(R.id.contrasena);
+
+        mpassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        loginBtn = (Button) findViewById(R.id.btnLogin);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
     }
 
 
     public void iniciarSesion(View v){
 
-        username = (EditText) findViewById(R.id.cedula);
-        password = (EditText) findViewById(R.id.contrasena);
 
-        loginBtn = (Button) findViewById(R.id.btnLogin);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        /*loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -61,8 +89,51 @@ public class LoginActivity extends AppCompatActivity {
                 urlRequest = urlBase + "action=Ingresar"+"&id="+id+"&password="+pass;
                 new LoginTask().execute();
             }
-        });
+        });*/
 
+    }
+
+    private void attemptLogin() {
+
+        // Reset errors.
+        username.setError(null);
+        mpassword.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = username.getText().toString();
+        String password = mpassword.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mpassword.setError("Espacio de contraseña vacio");
+            focusView =mpassword;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            username.setError("Espacio de usuario vacio");
+            focusView = username;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            String urlBase = Variables.getURLBase();
+            String id = username.getText().toString();
+            String pass = mpassword.getText().toString();
+//                urlRequest = urlBase + "action=Testing";
+            urlRequest = urlBase + "action=Ingresar"+"&id="+id+"&password="+pass;
+            new LoginTask().execute();
+        }
     }
 
     public class LoginTask extends AsyncTask<String, Void, String> {
