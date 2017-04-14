@@ -147,6 +147,18 @@ public class AndroidServlet extends HttpServlet {
                         }
                     }
                     break;
+                    case "AllCarreras" : {
+                        carreras.clear();
+                        carreras = ctrl.obtenerTodasCarreras();           
+                        String carrerasJSON  = gson.toJson(carreras);
+                        Object obj = gson.fromJson(carrerasJSON, Object.class);
+                        ArrayList<Object> objs = (ArrayList<Object>) obj;
+                        for( Object o : objs ) {
+                            System.out.println(o.toString());
+                        }
+                        response.getWriter().write(carrerasJSON);
+                    }
+                    break;
                     case "AgregarCarrera": {
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
@@ -170,7 +182,7 @@ public class AndroidServlet extends HttpServlet {
                                 error.setMsg("ERROR: Carrera NO Encontrada!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
-                                response.getWriter().write(gson.toJson(ca));                                
+                                response.getWriter().write("[" + gson.toJson(ca) + "]") ;                                
                             }
 
                         }else if(nombre != "" && codigo == ""){
@@ -230,7 +242,7 @@ public class AndroidServlet extends HttpServlet {
                                 error.setMsg("ERROR: Profesor NO Encontrado!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
-                                response.getWriter().write(gson.toJson(pro));
+                                response.getWriter().write("[" + gson.toJson(pro) + "]");
                             }
 
                         }else if(nombre != "" && cedula == ""){
@@ -323,7 +335,7 @@ public class AndroidServlet extends HttpServlet {
                                 error.setMsg("ERROR: Estudiante NO Encontrado!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
-                                response.getWriter().write(gson.toJson(es));
+                                response.getWriter().write("[" + gson.toJson(es) + "]");
                             }
                         }else if(nombre != "" && cedula == "" && idCarrera == ""){
                             estudiantes.clear();
@@ -401,7 +413,7 @@ public class AndroidServlet extends HttpServlet {
                                 error.setMsg("ERROR: Curso NO Encontrado!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
-                                response.getWriter().write(gson.toJson(cu));
+                                response.getWriter().write("[" + gson.toJson(cu) + "]");
                             }
                         }else if(nombre != "" && codigo == "" && idCarrera == ""){
                             cursos.clear();
