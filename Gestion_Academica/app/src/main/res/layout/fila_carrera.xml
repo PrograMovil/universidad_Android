@@ -16,7 +16,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="16dp"
         android:paddingTop="15dp"
-        android:text="asdasd" />
+        android:text="asdasd"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"
+        />
 
     <TextView
         android:id="@+id/nombreCarrera"
@@ -24,7 +28,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="16dp"
-        android:text="asdasdas" />
+        android:text="asdasdas"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"/>
 
 
     <TextView
@@ -33,7 +40,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="16dp"
-        android:text="asdsad" />
+        android:text="asdsad"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"/>
 
 
     <ImageButton

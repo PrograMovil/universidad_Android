@@ -2,15 +2,24 @@ package com.gestion_academica;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,9 +30,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-//asign task en fragment
-//http://stackoverflow.com/questions/18558084/implement-asynctask-in-fragment-android
+
 public class carrerasFragment extends Fragment {
 
 
@@ -63,8 +73,62 @@ public class carrerasFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.rvCarreras);
 
+        FloatingActionButton botonFlotante=(FloatingActionButton) view.findViewById(R.id.floatingActionButtonCarreras);
+
+        botonFlotante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+
+
+                LinearLayout layout=new LinearLayout(v.getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+
+                final TextView texto1 = new TextView(v.getContext());
+                texto1.setText("Elija el tipo de busqueda");
+                texto1.setTextSize(18);
+                layout.addView(texto1);
+
+                final Spinner spin=new Spinner(v.getContext());
+                List<String> listaSpin=new ArrayList<String>();
+                listaSpin.add("codigo");
+                listaSpin.add("nombre");
+                ArrayAdapter<String> adapter =new ArrayAdapter<String>(v.getContext(),android.R.layout.simple_spinner_item,listaSpin);
+                spin.setAdapter(adapter);
+                layout.addView(spin);
+
+
+                final EditText busqueda = new EditText(v.getContext());
+                busqueda.setHint("Busqueda");
+                layout.addView(busqueda);
+
+                alert.setView(layout);
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String result = busqueda.getText().toString();
+                        String selected = spin.getSelectedItem().toString();
+                        if (selected.equals("codigo")) {
+
+                        }
+                        else if(selected.equals("nombre")){
+
+                        }
+                    }
+                });
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+                alert.show();
+
+
+            }
+        });
+
         String urlBase = Variables.getURLBase();
-//                urlRequest = urlBase + "action=Testing";
         urlRequest = urlBase + "action=BuscarCarrera&codigo=&nombre=";
         new CarrerasTask(view.getContext(),recyclerV).execute();
     }

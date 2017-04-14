@@ -1,9 +1,6 @@
 package com.gestion_academica;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,26 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void iniciarSesion(View v){
-
-
-
-
-
-        /*loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String urlBase = Variables.getURLBase();
-                String id = username.getText().toString();
-                String pass = password.getText().toString();
-//                urlRequest = urlBase + "action=Testing";
-                urlRequest = urlBase + "action=Ingresar"+"&id="+id+"&password="+pass;
-                new LoginTask().execute();
-            }
-        });*/
-
-    }
 
     private void attemptLogin() {
 
@@ -125,12 +102,10 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             String urlBase = Variables.getURLBase();
             String id = username.getText().toString();
             String pass = mpassword.getText().toString();
-//                urlRequest = urlBase + "action=Testing";
             urlRequest = urlBase + "action=Ingresar"+"&id="+id+"&password="+pass;
             new LoginTask().execute();
         }
