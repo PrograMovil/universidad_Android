@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import LogicaNegocio.Carrera;
 
 
 /**
@@ -22,13 +23,13 @@ import org.json.JSONObject;
  */
 public class editarCarreraFragment extends Fragment {
 
-    JSONObject carrera;
+    Carrera carrera;
 
     public editarCarreraFragment() {
         // Required empty public constructor
     }
 
-    public static editarCarreraFragment newInstance(JSONObject carrera){
+    public static editarCarreraFragment newInstance(Carrera carrera){
         editarCarreraFragment newFragment=new editarCarreraFragment();
         newFragment.setCarrera(carrera);
         return newFragment;
@@ -51,14 +52,9 @@ public class editarCarreraFragment extends Fragment {
         EditText titulo = (EditText) view.findViewById(R.id.tituloCarrera);
         Button botonGuardar=(Button) view.findViewById(R.id.botonGuardarCarrera);
 
-
-        try {
-            codigo.setText(carrera.getString("codigo"));
-            nombre.setText(carrera.getString("nombre"));
-            titulo.setText(carrera.getString("titulo"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        codigo.setText(carrera.getCodigo());
+        nombre.setText(carrera.getNombre());
+        titulo.setText(carrera.getTitulo());
 
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +67,10 @@ public class editarCarreraFragment extends Fragment {
             }
         });
 
-
-
-
-
     }
 
 
-    public void setCarrera(JSONObject carrera) {
+    public void setCarrera(Carrera carrera) {
         this.carrera = carrera;
     }
 }

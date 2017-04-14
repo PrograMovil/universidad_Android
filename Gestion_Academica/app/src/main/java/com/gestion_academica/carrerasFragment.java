@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +33,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import LogicaNegocio.Carrera;
 
 
 public class carrerasFragment extends Fragment {
@@ -168,21 +171,26 @@ public class carrerasFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            JSONArray data=null;
+
+            JSONArray dataArray = null;
+            ArrayList<Carrera> carreras = new ArrayList<Carrera>();
             try {
                 if (result != null){
-
-                    data = new JSONArray(result);
-                    //poner datos en el array
-                    AdapterCarrera adapter=new AdapterCarrera(mContex, data);
-                    mRecyclerV.setAdapter(adapter);
-                    mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
+                        dataArray = new JSONArray(result);
+                        Carrera car = new Carrera();
+                        for(int i=0; i<dataArray.length(); i++){
+                            car.setCodigo(dataArray.getJSONObject(i).getString("codigo"));
+                            car.setNombre(dataArray.getJSONObject(i).getString("nombre"));
+                            car.setTitulo(dataArray.getJSONObject(i).getString("titulo"));
+                            carreras.add(car);
+                        }
+                        AdapterCarrera adapter=new AdapterCarrera(mContex, carreras);
+                        mRecyclerV.setAdapter(adapter);
+                        mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
 
         }
 

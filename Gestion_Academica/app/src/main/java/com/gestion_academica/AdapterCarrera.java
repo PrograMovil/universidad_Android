@@ -19,12 +19,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import LogicaNegocio.Carrera;
+
 import static com.gestion_academica.R.drawable.estudiante;
 
 
 public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHolder> {
 
-    private static JSONArray mCarreras;
+    private static ArrayList<Carrera> mCarreras;
     private static Context mContext;
 
 
@@ -33,7 +35,7 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
     }
 
 
-    public AdapterCarrera(Context context, JSONArray carreras) {
+    public AdapterCarrera(Context context, ArrayList<Carrera> carreras) {
         mCarreras = carreras;
         mContext = context;
     }
@@ -69,18 +71,10 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
         public void onClick(View v) {
             int position = getAdapterPosition(); // gets item position
             if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                JSONObject carrera=null;
-                try {
-                    carrera = mCarreras.getJSONObject(position);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // We can access the data within the views
-                try {
-                    Toast.makeText(context, mCarreras.getJSONObject(position).getString("codigo"), Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Carrera carrera = mCarreras.get(position);
+
+                Toast.makeText(context, (mCarreras.get(position)).getCodigo(), Toast.LENGTH_SHORT).show();
+
                 Fragment newFragment=new editarCarreraFragment().newInstance(carrera);
                 if(mContext instanceof Inicio){
                     FragmentTransaction fragmentTransaction=((Inicio) mContext).getSupportFragmentManager().beginTransaction();
@@ -113,30 +107,22 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
     @Override
     public void onBindViewHolder(AdapterCarrera.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        JSONObject carrera=null;
-        try {
-            carrera = mCarreras.getJSONObject(position);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Carrera carrera = null;
+        carrera = (Carrera) mCarreras.get(position);
 
         // Set item views based on your views and data model
-        try {
         TextView codigo = viewHolder.codigo;
-        codigo.setText(carrera.getString("codigo"));
+        codigo.setText(carrera.getCodigo());
         TextView nombre = viewHolder.nombre;
-        nombre.setText(carrera.getString("nombre"));
+        nombre.setText(carrera.getNombre());
         TextView titulo = viewHolder.titulo;
-        titulo.setText(carrera.getString("titulo"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        titulo.setText(carrera.getTitulo());
 
     }
 
     @Override
     public int getItemCount() {
-        return mCarreras.length();
+        return mCarreras.size();
     }
 
 
