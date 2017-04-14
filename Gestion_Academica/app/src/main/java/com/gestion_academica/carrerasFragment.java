@@ -176,9 +176,11 @@ public class carrerasFragment extends Fragment {
             ArrayList<Carrera> carreras = new ArrayList<Carrera>();
             try {
                 if (result != null){
+                        carreras.clear();
                         dataArray = new JSONArray(result);
-                        Carrera car = new Carrera();
+                        Carrera car;
                         for(int i=0; i<dataArray.length(); i++){
+                            car = new Carrera();
                             car.setCodigo(dataArray.getJSONObject(i).getString("codigo"));
                             car.setNombre(dataArray.getJSONObject(i).getString("nombre"));
                             car.setTitulo(dataArray.getJSONObject(i).getString("titulo"));
