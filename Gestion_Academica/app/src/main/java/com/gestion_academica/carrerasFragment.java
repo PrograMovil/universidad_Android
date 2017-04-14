@@ -39,6 +39,8 @@ public class carrerasFragment extends Fragment {
 
     String urlRequest;
     String result = "";
+    String mcodigo=null;
+    String mnombre=null;
 
     public carrerasFragment() {
         // Required empty public constructor
@@ -46,8 +48,13 @@ public class carrerasFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static carrerasFragment newInstance(String param1, String param2) {
+    public static carrerasFragment newInstance(String codigo, String nombre) {
         carrerasFragment fragment = new carrerasFragment();
+        if(codigo!=null)
+            fragment.setMcodigo(codigo);
+        if(nombre!=null)
+            fragment.setMnombre(nombre);
+
         Bundle args = new Bundle();
         return fragment;
     }
@@ -106,14 +113,19 @@ public class carrerasFragment extends Fragment {
 
                 alert.setView(layout);
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String result = busqueda.getText().toString();
                         String selected = spin.getSelectedItem().toString();
                         if (selected.equals("codigo")) {
-
+                            carrerasFragment fragment=new carrerasFragment().newInstance(result,null);
+                            FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaCarreras").commit();
                         }
                         else if(selected.equals("nombre")){
-
+                            carrerasFragment fragment=new carrerasFragment().newInstance(null,result);
+                            FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaCarreras").commit();
                         }
                     }
                 });
@@ -129,7 +141,15 @@ public class carrerasFragment extends Fragment {
         });
 
         String urlBase = Variables.getURLBase();
+
+        if(mcodigo==null && mnombre==null){
         urlRequest = urlBase + "action=BuscarCarrera&codigo=&nombre=";
+        }
+        else if(mcodigo!=null && mnombre==null){
+            urlRequest = urlBase + "action=BuscarCarrera&codigo="+mcodigo+"&nombre=";
+        }
+        else urlRequest = urlBase + "action=BuscarCarrera&codigo=&nombre="+mnombre;
+
         new CarrerasTask(view.getContext(),recyclerV).execute();
     }
 
@@ -151,6 +171,7 @@ public class carrerasFragment extends Fragment {
             JSONArray data=null;
             try {
                 if (result != null){
+
                     data = new JSONArray(result);
                     //poner datos en el array
                     AdapterCarrera adapter=new AdapterCarrera(mContex, data);
@@ -192,4 +213,11 @@ public class carrerasFragment extends Fragment {
     }
 
 
+    public void setMcodigo(String mcodigo) {
+        this.mcodigo = mcodigo;
+    }
+
+    public void setMnombre(String mnombre) {
+        this.mnombre = mnombre;
+    }
 }
