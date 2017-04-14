@@ -18,15 +18,15 @@
             android:icon="@drawable/diplomao" />
         <item
             android:id="@+id/nav_cursos"
-            android:title="Cursos"
-            android:icon="@drawable/books" />
+            android:icon="@drawable/booksstack"
+            android:title="Cursos" />
         <item
             android:id="@+id/nav_grupos"
             android:title="Grupos"
             android:icon="@drawable/classroom" />
         <item
             android:id="@+id/nav_ciclo"
-            android:icon="@drawable/roman_number"
+            android:icon="@drawable/romannum"
             android:title="Ciclos Lectivos" />
     </group>
 

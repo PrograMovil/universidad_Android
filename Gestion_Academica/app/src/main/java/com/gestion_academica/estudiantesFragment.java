@@ -19,12 +19,12 @@ import LogicaNegocio.Estudiante;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentEstudiantes extends Fragment {
+public class estudiantesFragment extends Fragment {
 
     ArrayList<Estudiante> estudiantes;
 
 
-    public FragmentEstudiantes() {
+    public estudiantesFragment() {
         // Required empty public constructor
     }
 
@@ -42,17 +42,11 @@ public class FragmentEstudiantes extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Lookup the recyclerview in activity layout
         RecyclerView reciclerEstudiante = (RecyclerView) view.findViewById(R.id.rvEstudiantes);
-        // Initialize contacts
-        estudiantes = Estudiante.createContactsList(20);
-        // Create adapter passing in the sample user data
+        estudiantes = Estudiante.createContactsList(20);//ingresar datos quemados para pruebas
         AdapterEstudiante adapter = new AdapterEstudiante(view.getContext(), estudiantes);
-        // Attach the adapter to the recyclerview to populate items
         reciclerEstudiante.setAdapter(adapter);
-        // Set layout manager to position the items
         reciclerEstudiante.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        // That's all!
 
 
         //reciclerEstudiante.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {

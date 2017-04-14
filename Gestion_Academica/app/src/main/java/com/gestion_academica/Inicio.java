@@ -1,5 +1,6 @@
 package com.gestion_academica;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -70,6 +71,12 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //cerrar sesion
+            Intent intent = new Intent(Inicio.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Inicio.this.startActivity(intent);
+            Variables.clearUser(this);
+            finish();
             return true;
         }
 
@@ -84,6 +91,9 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
 
         switch (id){
             case R.id.nav_carreras:{
+                carrerasFragment fragment=new carrerasFragment();
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
 
             };break;
             case R.id.nav_cursos:{
@@ -94,10 +104,10 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
             };break;
             case R.id.nav_estudiantes:{
 
-                FragmentEstudiantes fragment=new FragmentEstudiantes();
+                estudiantesFragment fragment=new estudiantesFragment();
                 FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
-                //fragmentTransaction.commit();
+
 
             };break;
             case R.id.nav_profesores:{
@@ -121,4 +131,6 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
         fragmentTransaction.replace(R.id.frament_container, fragment);
         fragmentTransaction.commit();
     }
+
+
 }

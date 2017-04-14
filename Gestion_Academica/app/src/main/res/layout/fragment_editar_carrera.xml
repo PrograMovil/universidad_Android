@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gestion_academica.editarCarreraFragment">
+
+    <TextView
+        android:id="@+id/codigoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="99dp"
+        android:text="Codigo"
+        android:textSize="18sp"
+        android:layout_marginStart="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/codigoCarrera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dsaads"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/codigoText"
+        android:layout_centerHorizontal="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/codigoText"
+        android:layout_marginTop="20dp"
+        android:id="@+id/nombrewidgetCarrera"
+        android:layout_alignStart="@+id/codigoText">
+
+        <EditText
+            android:id="@+id/nombreCarrera"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Nombre" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombrewidgetCarrera"
+        android:layout_marginTop="20dp"
+        android:id="@+id/titulowidgetCarrera"
+        android:layout_alignStart="@+id/codigoText">
+
+        <EditText
+            android:id="@+id/tituloCarrera"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Titulo" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/botonGuardarCarrera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titulowidgetCarrera"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:text="Guardar" />
+
+</RelativeLayout>
