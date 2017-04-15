@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -74,6 +75,9 @@ public class editarCarreraFragment extends Fragment {
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(v.getContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(titulo.getWindowToken(), 0);
+
                 final View vi=v;
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Confirmacion");
@@ -130,6 +134,8 @@ public class editarCarreraFragment extends Fragment {
                     }
                 });
                 alert.show();
+
+
             }
         });
 
@@ -149,15 +155,16 @@ public class editarCarreraFragment extends Fragment {
         protected void onPostExecute(String result) {
 
             try {
-                if (result != null){
+                if (!result.equals("null")){
                     JSONObject data = new JSONObject(result);
-                    String msg = data.getString("type");
+                    String dataResult = data.getString("type");
+                    String msg = data.getString("msg");
 
-                    if (msg.equals("Success")){
-                        Toast.makeText(mContex, "Carrera editada", Toast.LENGTH_LONG).show();
+                    if (dataResult.equals("Success")){
+                        Toast.makeText(mContex, msg, Toast.LENGTH_LONG).show();
                         getFragmentManager().popBackStackImmediate();
                     } else {
-                        Toast.makeText(mContex, "Error al editar la carrera", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContex, msg, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(mContex, "Error al consultar la base de datos", Toast.LENGTH_LONG).show();

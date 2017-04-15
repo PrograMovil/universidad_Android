@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -190,7 +191,7 @@ public class carrerasFragment extends Fragment {
             JSONArray dataArray = null;
             ArrayList<Carrera> carreras = new ArrayList<Carrera>();
             try {
-                if (result != null){
+                if (!result.equals("null")){
                         carreras.clear();
                         dataArray = new JSONArray(result);
                         Carrera car;
@@ -205,6 +206,7 @@ public class carrerasFragment extends Fragment {
                         mRecyclerV.setAdapter(adapter);
                         mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
                 }
+                else Toast.makeText(mContex, "Error al consultar la base de datos", Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
