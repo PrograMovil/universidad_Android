@@ -24,5 +24,11 @@ public class Profesor extends Persona implements Serializable{
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-        
+
+    @Override
+    public String toString() {
+        return "Profesor{" + super.toString()+ ", " + usuario.toString() + '}';
+    }
+    
+    
 }

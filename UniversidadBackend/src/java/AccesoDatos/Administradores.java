@@ -29,8 +29,9 @@ public class Administradores extends AccesoDatos{
     
     public int actualizar(Administrador c){
         String tableName = "Administrador";
-        String tableParams = "nombre='%s', telefono='%s', email='%s' where id='%s'";
+        String tableParams = "nombre='%s', telefono='%s', email='%s' where cedula='%s'";
         tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(), c.getCedula());
+        
         new Usuarios().actualizar(c.getUsuario());
         return super.actualizar(tableName, tableParams);
     }
@@ -64,6 +65,17 @@ public class Administradores extends AccesoDatos{
         
         String tableName = "Administrador";
         ResultSet rs = super.obtenerTodo(tableName);
+        ArrayList<Administrador> lista=new ArrayList();
+        while (rs.next()) {
+            lista.add(toAdministrador(rs));
+        }
+        return lista;
+    }
+
+    public ArrayList<Administrador> obtenerPorNombre(String nombre) throws Exception{
+        String tableName = "Administrador";
+        String columna= "nombre";
+        ResultSet rs = super.obtenerLike(tableName,columna,nombre);
         ArrayList<Administrador> lista=new ArrayList();
         while (rs.next()) {
             lista.add(toAdministrador(rs));

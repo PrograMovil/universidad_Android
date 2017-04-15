@@ -25,6 +25,11 @@ public class Administrador extends Persona implements Serializable{
         this.usuario = usuario;
     }
 
+    @Override
+    public String toString() {
+        return "Administrador{" + super.toString() + ", " + usuario.toString() + '}';
+    }
+
     
     
     

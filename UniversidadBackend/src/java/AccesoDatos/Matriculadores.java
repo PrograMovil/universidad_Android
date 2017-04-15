@@ -29,8 +29,9 @@ public class Matriculadores extends AccesoDatos{
     
     public int actualizar(Matriculador c){
         String tableName = "Matriculador";
-        String tableParams = "nombre='%s', telefono='%s', email='%s' where id='%s'";
-        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(),c.getUsuario().getId(), c.getCedula());
+        String tableParams = "nombre='%s', telefono='%s', email='%s' where cedula='%s'";
+        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(), c.getCedula());
+        
         new Usuarios().actualizar(c.getUsuario());
         return super.actualizar(tableName, tableParams);
     }
@@ -64,6 +65,17 @@ public class Matriculadores extends AccesoDatos{
         
         String tableName = "Matriculador";
         ResultSet rs = super.obtenerTodo(tableName);
+        ArrayList<Matriculador> lista=new ArrayList();
+        while (rs.next()) {
+            lista.add(toMatriculador(rs));
+        }
+        return lista;
+    }
+
+    public ArrayList<Matriculador> obtenerPorNombre(String nombre) throws Exception{
+        String tableName = "Matriculador";
+        String columna= "nombre";
+        ResultSet rs = super.obtenerLike(tableName,columna,nombre);
         ArrayList<Matriculador> lista=new ArrayList();
         while (rs.next()) {
             lista.add(toMatriculador(rs));

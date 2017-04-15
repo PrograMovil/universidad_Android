@@ -494,7 +494,14 @@ public class Control {
         return null;
     }
     
-    
+    public ArrayList<Matriculador> obtenerMatriculadoresPorNombre(String nombre){
+        try {
+            return matriculadores.obtenerPorNombre(nombre);
+        } catch (Exception ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     
     public int addMatriculador(Matriculador ca){
@@ -526,7 +533,7 @@ public class Control {
     }
 //</editor-fold>
     
-    //<editor-fold defaultstate="collapsed" desc="Metodos Matriculador">
+    //<editor-fold defaultstate="collapsed" desc="Metodos Administrador">
     
     public ArrayList<Administrador> obtenerTodosLosAdministradores(){
         try {
@@ -537,7 +544,14 @@ public class Control {
         return null;
     }
     
-    
+    ArrayList<Administrador> obtenerAdministradoresPorNombre(String nombre) {
+        try {
+            return administradores.obtenerPorNombre(nombre);
+        } catch (Exception ex) {
+            Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
     
     public int addAdministrador(Administrador ca){
@@ -731,6 +745,8 @@ public class Control {
     }
     
 //</editor-fold>
+
+    
     
     
 }

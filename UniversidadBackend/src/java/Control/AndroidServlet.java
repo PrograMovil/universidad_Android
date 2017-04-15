@@ -5,12 +5,14 @@
  */
 package Control;
 
+import LogicaNegocio.Administrador;
 import LogicaNegocio.Carrera;
 import LogicaNegocio.Ciclo;
 import LogicaNegocio.Curso;
 import LogicaNegocio.Estudiante;
 import LogicaNegocio.Grupo;
 import LogicaNegocio.Horario;
+import LogicaNegocio.Matriculador;
 import LogicaNegocio.Profesor;
 import LogicaNegocio.Usuario;
 import com.google.gson.Gson;
@@ -83,20 +85,22 @@ public class AndroidServlet extends HttpServlet {
         ArrayList<Carrera> carreras = new ArrayList<Carrera>();
         ArrayList<Profesor> profesores = new ArrayList<Profesor>();
         ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+        ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
+        ArrayList<Administrador> administradores = new ArrayList<Administrador>();
         ArrayList<Curso> cursos = new ArrayList<Curso>();
         
         
-        ArrayList<Carrera> allCarreras = null;
-        
-        Curso cursoCurrent = null;
-        ArrayList<Grupo> grupos = null;
-        ArrayList<Profesor> allProfesores = null;
-        ArrayList<Ciclo> ciclos = null;
-        Estudiante estudianteCurrent = null;
-        Carrera carreraEstudianteCurrent = null;
-        ArrayList<Curso> cursosCarrera = null;
-        ArrayList<Grupo> gruposCurso = null;
-        Ciclo cicloDefault = null;;
+//        ArrayList<Carrera> allCarreras = null;
+//        
+//        Curso cursoCurrent = null;
+//        ArrayList<Grupo> grupos = null;
+//        ArrayList<Profesor> allProfesores = null;
+//        ArrayList<Ciclo> ciclos = null;
+//        Estudiante estudianteCurrent = null;
+//        Carrera carreraEstudianteCurrent = null;
+//        ArrayList<Curso> cursosCarrera = null;
+//        ArrayList<Grupo> gruposCurso = null;
+//        Ciclo cicloDefault = null;;
         
         Control ctrl = new Control();
         ErrorMsg error = new ErrorMsg("");
@@ -151,12 +155,47 @@ public class AndroidServlet extends HttpServlet {
                         carreras.clear();
                         carreras = ctrl.obtenerTodasCarreras();           
                         String carrerasJSON  = gson.toJson(carreras);
-                        Object obj = gson.fromJson(carrerasJSON, Object.class);
-                        ArrayList<Object> objs = (ArrayList<Object>) obj;
-                        for( Object o : objs ) {
-                            System.out.println(o.toString());
-                        }
+//                        Object obj = gson.fromJson(carrerasJSON, Object.class);
+//                        ArrayList<Object> objs = (ArrayList<Object>) obj;
+//                        for( Object o : objs ) {
+//                            System.out.println(o.toString());
+//                        }
                         response.getWriter().write(carrerasJSON);
+                    }
+                    break;
+                    case "AllProfesores" : {
+                        profesores.clear();
+                        profesores = ctrl.obtenerTodosLosProfesores();           
+                        String profesoresJSON  = gson.toJson(profesores);
+                        response.getWriter().write(profesoresJSON);
+                    }
+                    break;
+                    case "AllEstudiantes" : {
+                        estudiantes.clear();
+                        estudiantes = ctrl.obtenerTodosLosEstudiantes();           
+                        String estudiantesJSON  = gson.toJson(estudiantes);
+                        response.getWriter().write(estudiantesJSON);
+                    }
+                    break;
+                    case "AllMatriculadores" : {
+                        matriculadores.clear();
+                        matriculadores = ctrl.obtenerTodosLosMatriculadores();           
+                        String matriculadoresJSON  = gson.toJson(matriculadores);
+                        response.getWriter().write(matriculadoresJSON);
+                    }
+                    break;
+                    case "AllAdministradores" : {
+                        administradores.clear();
+                        administradores = ctrl.obtenerTodosLosAdministradores();           
+                        String administradoresJSON  = gson.toJson(administradores);
+                        response.getWriter().write(administradoresJSON);
+                    }
+                    break;
+                    case "AllCursos" : {
+                        cursos.clear();
+                        cursos = ctrl.obtenerTodosLosCursos();           
+                        String cursosJSON  = gson.toJson(cursos);
+                        response.getWriter().write(cursosJSON);
                     }
                     break;
                     case "AgregarCarrera": {
@@ -225,7 +264,7 @@ public class AndroidServlet extends HttpServlet {
                         Usuario user = new Usuario(cedula,password,3);
                         Profesor profe = new Profesor(user,nombre,cedula,telefono,email);
                         if(ctrl.addProfesor(profe) == 1){
-                            success.setMsg("Profesor Arregada!");
+                            success.setMsg("Profesor Arregado!");
                             response.getWriter().write(gson.toJson(success));
                         }else{
                             error.setMsg("ERROR: Profesor NO Agregado!");
@@ -360,6 +399,132 @@ public class AndroidServlet extends HttpServlet {
                             estudiantes.clear();
                             estudiantes = ctrl.obtenerTodosLosEstudiantes();
                             response.getWriter().write(gson.toJson(estudiantes));
+                        }
+                    }
+                    break;
+                    case "AgregarMatriculador": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,2);
+                        Matriculador matriculador = new Matriculador(user,nombre,cedula,telefono,email);
+                        if(ctrl.addMatriculador(matriculador) == 1){
+                            success.setMsg("Matriculador Arregado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Matriculador NO Agregado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "BuscarMatriculador": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        if(cedula != "" && nombre == ""){
+                            Matriculador ma;
+                            if((ma = ctrl.getMatriculador(cedula)) == null){
+                                error.setMsg("ERROR: Matriculador NO Encontrado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write("[" + gson.toJson(ma) + "]");
+                            }
+
+                        }else if(nombre != "" && cedula == ""){
+                            matriculadores.clear();
+                            matriculadores = ctrl.obtenerMatriculadoresPorNombre(nombre);
+                            if(matriculadores.size() == 0){
+                                error.setMsg("ERROR: Matriculadores NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(matriculadores));
+                            }  
+                        }else if(nombre == "" && cedula == ""){
+                            matriculadores.clear();
+                            matriculadores = ctrl.obtenerTodosLosMatriculadores();
+                            response.getWriter().write(gson.toJson(matriculadores));
+                        }
+                    }
+                    break;
+                    case "EditarMatriculador":{
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,2);
+                        Matriculador ma = new Matriculador(user,nombre,cedula,telefono,email);
+                        System.out.println(ma.toString());
+                        if(ctrl.updateMatriculador(ma) == 1){
+                            success.setMsg("Matriculador Actualizado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Matriculador NO Actualizado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "AgregarAdministrador": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,2);
+                        Administrador administrador = new Administrador(user,nombre,cedula,telefono,email);
+                        if(ctrl.addAdministrador(administrador) == 1){
+                            success.setMsg("Administrador Arregado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Administrador NO Agregado!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
+                    case "BuscarAdministrador": {
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        if(cedula != "" && nombre == ""){
+                            Administrador admi;
+                            if((admi = ctrl.getAdministrador(cedula)) == null){
+                                error.setMsg("ERROR: Administrador NO Encontrado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write("[" + gson.toJson(admi) + "]");
+                            }
+
+                        }else if(nombre != "" && cedula == ""){
+                            administradores.clear();
+                            administradores = ctrl.obtenerAdministradoresPorNombre(nombre);
+                            if(administradores.size() == 0){
+                                error.setMsg("ERROR: Administradores NO Encontrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                response.getWriter().write(gson.toJson(administradores));
+                            }  
+                        }else if(nombre == "" && cedula == ""){
+                            administradores.clear();
+                            administradores = ctrl.obtenerTodosLosAdministradores();
+                            response.getWriter().write(gson.toJson(administradores));
+                        }
+                    }
+                    break;
+                    case "EditarAdministrador":{
+                        String cedula = request.getParameter("cedula");
+                        String nombre = request.getParameter("nombre");
+                        String telefono = request.getParameter("telefono");
+                        String email = request.getParameter("email");
+                        String password = request.getParameter("password");
+                        Usuario user = new Usuario(cedula,password,2);
+                        Administrador admi = new Administrador(user,nombre,cedula,telefono,email);
+                        System.out.println(admi.toString());
+                        if(ctrl.updateAdministrador(admi) == 1){
+                            success.setMsg("Administrador Actualizado!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Administrador NO Actualizado!");
+                            response.getWriter().write(gson.toJson(error));
                         }
                     }
                     break;

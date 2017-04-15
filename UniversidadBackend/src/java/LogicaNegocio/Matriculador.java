@@ -25,6 +25,11 @@ public class Matriculador extends Persona implements Serializable{
         this.usuario = usuario;
     }
 
+    @Override
+    public String toString() {
+        return "Matriculador{" + super.toString() + ", " + usuario.toString() + '}';
+    }
+
     
     
     
