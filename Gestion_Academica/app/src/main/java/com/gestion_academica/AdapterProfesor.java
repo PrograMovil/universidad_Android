@@ -1,43 +1,31 @@
 package com.gestion_academica;
 
-
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.gestion_academica.Inicio;
+import com.gestion_academica.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import LogicaNegocio.Carrera;
+import LogicaNegocio.Profesor;
 
-import static com.gestion_academica.R.drawable.estudiante;
+public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHolder>{
 
 
-public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHolder> {
-
-    private static ArrayList<Carrera> mCarreras;
+    private static ArrayList<Profesor> mProfesores;
     private static Context mContext;
 
 
-    public class AdapterItem{
-
-    }
-
-
-    public AdapterCarrera(Context context, ArrayList<Carrera> carreras) {
-        mCarreras = carreras;
+    public AdapterProfesor(Context context, ArrayList<Profesor> profesores) {
+        mProfesores = profesores;
         mContext = context;
     }
 
@@ -46,10 +34,10 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
     }
 
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView nombre;
-        public TextView codigo;
-        public TextView titulo;
+        public TextView cedula;
         public ImageButton botonEditar;
         private Context context;
 
@@ -59,10 +47,9 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
             super(itemView);
 
             this.context = context;
-            nombre = (TextView) itemView.findViewById(R.id.nombreCarrera);
-            codigo = (TextView) itemView.findViewById(R.id.codigoCarrera);
-            titulo = (TextView) itemView.findViewById(R.id.tituloCarrera);
-            botonEditar=(ImageButton) itemView.findViewById(R.id.botonEditarCarrera);
+            nombre = (TextView) itemView.findViewById(R.id.nombreProfesor);
+            cedula = (TextView) itemView.findViewById(R.id.cedulaProfesor);
+            botonEditar=(ImageButton) itemView.findViewById(R.id.botonEditarProfesor);
 
 
             botonEditar.setOnClickListener(new View.OnClickListener() {
@@ -70,10 +57,10 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
                 public void onClick(View v) {
                     int position = getAdapterPosition(); // gets item position
                     if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                        Carrera carrera = mCarreras.get(position);
+                        Profesor profesor = mProfesores.get(position);
 
 
-                        Fragment newFragment=new editarCarreraFragment().newInstance(carrera);
+                        Fragment newFragment=new editarProfesorFragment().newInstance(profesor);
                         if(mContext instanceof Inicio){
                             FragmentTransaction fragmentTransaction=((Inicio) mContext).getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaCarreras").commit();
@@ -93,40 +80,45 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
 
 
 
-
-
     @Override
-    public AdapterCarrera.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterProfesor.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View contactView = inflater.inflate(R.layout.fila_carrera, parent, false);
+        View contactView = inflater.inflate(R.layout.fragment_profesor, parent, false);
 
-        AdapterCarrera.ViewHolder viewHolder = new AdapterCarrera.ViewHolder(context,contactView);
+        AdapterProfesor.ViewHolder viewHolder = new AdapterProfesor.ViewHolder(context,contactView);
         return viewHolder;
     }
 
 
     @Override
-    public void onBindViewHolder(AdapterCarrera.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(AdapterProfesor.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Carrera carrera = null;
-        carrera = (Carrera) mCarreras.get(position);
+        Profesor profesor = null;
+        profesor = (Profesor) mProfesores.get(position);
 
         // Set item views based on your views and data model
-        TextView codigo = viewHolder.codigo;
-        codigo.setText(carrera.getCodigo());
+        TextView codigo = viewHolder.cedula;
+        codigo.setText(profesor.getCedula());
         TextView nombre = viewHolder.nombre;
-        nombre.setText(carrera.getNombre());
-        TextView titulo = viewHolder.titulo;
-        titulo.setText(carrera.getTitulo());
+        nombre.setText(profesor.getNombre());
 
     }
 
     @Override
     public int getItemCount() {
-        return mCarreras.size();
+        return mProfesores.size();
     }
 
 
+
+
+
+
+
+
+
+
 }
+

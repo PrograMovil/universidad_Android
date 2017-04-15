@@ -111,6 +111,9 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
 
             };break;
             case R.id.nav_profesores:{
+                profesoresFragment fragment=new profesoresFragment();
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
 
             };break;
             case R.id.nav_matriculadores:{

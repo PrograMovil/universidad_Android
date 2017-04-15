@@ -1,0 +1,125 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gestion_academica.agregarProfesorFragment">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/cedulawidgetProfesor"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView7"
+        android:layout_marginStart="21dp">
+
+        <EditText
+            android:id="@+id/cedulaProfesor"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Cedula" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cedulawidgetProfesor"
+        android:layout_marginTop="20dp"
+        android:id="@+id/nombrewidgetProfesor"
+        android:layout_alignStart="@+id/cedulawidgetProfesor">
+
+        <EditText
+            android:id="@+id/nombreProfesor"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Nombre" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombrewidgetProfesor"
+        android:layout_marginTop="20dp"
+        android:id="@+id/telefonoWidgetPro"
+        android:layout_alignStart="@+id/cedulawidgetProfesor">
+
+        <EditText
+            android:id="@+id/telefonoProfesor"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Telefono" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/telefonoWidgetPro"
+        android:layout_marginTop="20dp"
+        android:id="@+id/emailWidgetPro"
+        android:layout_alignStart="@+id/cedulawidgetProfesor">
+
+        <EditText
+            android:id="@+id/emailProfesor"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Email" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailWidgetPro"
+        android:layout_marginTop="20dp"
+        android:id="@+id/contrasenaWidgetPro"
+        android:layout_alignStart="@+id/cedulawidgetProfesor">
+
+        <EditText
+            android:id="@+id/contrasenaProfesor"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/botonGuardarProfesor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contrasenaWidgetPro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_weight="1"
+        android:text="Guardar" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/avatar"
+        android:layout_above="@+id/telefonoWidgetPro"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginBottom="11dp" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/callanswer"
+        android:layout_above="@+id/emailWidgetPro"
+        android:layout_alignStart="@+id/imageView7"
+        android:layout_marginBottom="11dp" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/email"
+        android:layout_alignBottom="@+id/emailWidgetPro"
+        android:layout_alignStart="@+id/imageView8"
+        android:layout_marginBottom="14dp" />
+
+
+</RelativeLayout>
