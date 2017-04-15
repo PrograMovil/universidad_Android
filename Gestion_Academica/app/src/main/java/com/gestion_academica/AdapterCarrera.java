@@ -50,7 +50,7 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
         public TextView nombre;
         public TextView codigo;
         public TextView titulo;
-        public ImageButton botonEditar;
+        public TextView botonEditar;
         private Context context;
 
 
@@ -62,7 +62,7 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
             nombre = (TextView) itemView.findViewById(R.id.nombreCarrera);
             codigo = (TextView) itemView.findViewById(R.id.codigoCarrera);
             titulo = (TextView) itemView.findViewById(R.id.tituloCarrera);
-            botonEditar=(ImageButton) itemView.findViewById(R.id.botonEditarCarrera);
+            botonEditar=(TextView) itemView.findViewById(R.id.botonEditarCarrera);
 
 
             botonEditar.setOnClickListener(new View.OnClickListener() {
