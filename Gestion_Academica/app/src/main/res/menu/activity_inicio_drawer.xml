@@ -2,20 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:title="Matriculadores"
-            android:id="@+id/nav_matriculadores"
+
+        <item android:title="Administradores"
+            android:id="@+id/nav_administradores"
             android:icon="@drawable/astronaut" />
-        <item android:title="Estudiantes"
-            android:id="@+id/nav_estudiantes"
-            android:icon="@drawable/estudiante" />
+
         <item
             android:id="@+id/nav_profesores"
             android:title="Profesores"
             android:icon="@drawable/profesor" />
+
+        <item
+            android:id="@+id/nav_matriculadores"
+            android:icon="@drawable/avatar"
+            android:title="Matriculadores" />
+
+        <item android:title="Estudiantes"
+            android:id="@+id/nav_estudiantes"
+            android:icon="@drawable/estudiante" />
+
         <item
             android:id="@+id/nav_carreras"
             android:title="Carreras"
             android:icon="@drawable/diplomao" />
+
         <item
             android:id="@+id/nav_cursos"
             android:icon="@drawable/booksstack"

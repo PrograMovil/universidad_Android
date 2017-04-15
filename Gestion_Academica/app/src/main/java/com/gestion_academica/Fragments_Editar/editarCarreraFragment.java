@@ -1,7 +1,6 @@
-package com.gestion_academica;
+package com.gestion_academica.Fragments_Editar;
 
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -15,9 +14,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gestion_academica.R;
+import com.gestion_academica.Variables;
 
 import org.json.JSONException;
 import org.json.JSONObject;

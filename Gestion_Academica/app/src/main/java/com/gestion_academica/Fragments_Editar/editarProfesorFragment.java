@@ -1,7 +1,6 @@
-package com.gestion_academica;
+package com.gestion_academica.Fragments_Editar;
 
 
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,49 +14,63 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.gestion_academica.R;
+import com.gestion_academica.Variables;
+import com.gestion_academica.asyncTask;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class agregarProfesorFragment extends Fragment {
+import LogicaNegocio.Profesor;
 
+
+public class editarProfesorFragment extends Fragment {
+
+    Profesor profesor;
     String urlRequest;
     String result;
 
-    public agregarProfesorFragment() {
+    public editarProfesorFragment() {
         // Required empty public constructor
     }
 
+    public static editarProfesorFragment newInstance(Profesor prof){
+        editarProfesorFragment newFragment=new editarProfesorFragment();
+        newFragment.setProfesor(prof);
+        return newFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_agregar_profesor, container, false);
+        return inflater.inflate(R.layout.fragment_editar_profesor, container, false);
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        final EditText cedula=(EditText) view.findViewById(R.id.cedulaProfesor);
+        final TextView cedula=(TextView) view.findViewById(R.id.cedulaProfesor);
         final EditText nombre = (EditText) view.findViewById(R.id.nombreProfesor);
         final EditText telefono = (EditText) view.findViewById(R.id.telefonoProfesor);
         final EditText email = (EditText) view.findViewById(R.id.emailProfesor);
         final EditText pass = (EditText) view.findViewById(R.id.contrasenaProfesor);
         Button botonGuardar=(Button) view.findViewById(R.id.botonGuardarProfesor);
 
-
-
+        cedula.setText(profesor.getCedula());
+        nombre.setText(profesor.getNombre());
+        telefono.setText(profesor.getTelefono());
+        email.setText(profesor.getEmail());
+        pass.setText(profesor.getUsuario().getClave());
 
         botonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(v.getContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(pass.getWindowToken(), 0);
+
                 final View vi=v;
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Confirmacion");
-                alert.setMessage("Desea crear este profesor?");
+                alert.setMessage("Desea editar este profesor?");
                 alert.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
@@ -104,17 +117,15 @@ public class agregarProfesorFragment extends Fragment {
                             cancel=true;
                         }
 
+
                         if (cancel) {
                             focusView.requestFocus();
                         } else {
 
                             String urlBase = Variables.getURLBase();
-                            urlRequest = urlBase + "action=AgregarProfesor"+"&cedula="+ced+"&nombre="+nom+"&telefono="+tel+"&email="+ema+"&password="+con;
+                            urlRequest = urlBase + "action=EditarProfesor"+"&cedula="+ced+"&nombre="+nom+"&telefono="+tel+"&email="+ema+"&password="+con;
                             new asyncTask(vi.getContext(),getFragmentManager(),urlRequest).execute();
                         }
-
-
-
 
                     }
                 });
@@ -125,9 +136,18 @@ public class agregarProfesorFragment extends Fragment {
                 });
                 alert.show();
 
+
             }
         });
 
     }
 
+
+
+
+
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gestion_academica.editarEstudianteFragment">
+    tools:context="com.gestion_academica.Fragments_Editar.editarEstudianteFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

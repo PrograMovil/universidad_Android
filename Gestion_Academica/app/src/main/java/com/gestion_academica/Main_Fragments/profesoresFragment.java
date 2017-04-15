@@ -1,13 +1,12 @@
-package com.gestion_academica;
+package com.gestion_academica.Main_Fragments;
 
-
-import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gestion_academica.Adapters.AdapterProfesor;
+import com.gestion_academica.Fragments_Agregar.agregarProfesorFragment;
+import com.gestion_academica.Inicio;
+import com.gestion_academica.R;
+import com.gestion_academica.Variables;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,23 +39,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import LogicaNegocio.Matriculador;
+import LogicaNegocio.Profesor;
 import LogicaNegocio.Usuario;
 
-
-public class matriculadoresFragment extends Fragment {
+public class profesoresFragment extends Fragment{
     String urlRequest;
     String result = "";
     String mCedula=null;
     String mNombre=null;
 
 
-    public matriculadoresFragment(){
+    public profesoresFragment(){
 
     }
 
-    public static matriculadoresFragment newInstance(String cedula, String nombre) {
-        matriculadoresFragment fragment = new matriculadoresFragment();
+    public static profesoresFragment newInstance(String cedula, String nombre) {
+        profesoresFragment fragment = new profesoresFragment();
         if(cedula!=null)
             fragment.setmCedula(cedula);
         if(nombre!=null)
@@ -69,7 +73,7 @@ public class matriculadoresFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_matriculadores, container, false);
+        View v=inflater.inflate(R.layout.fragment_profesor_list, container, false);
 
 
         return v;
@@ -79,18 +83,18 @@ public class matriculadoresFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.listMatriculador);
-        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarMatriculador);
-        FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarMatriculador);
+        RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.listProfesor);
+        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarProfesor);
+        FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarProfesor);
 
 
         botonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment=new agregarMatriculadorFragment();
+                Fragment newFragment=new agregarProfesorFragment();
                 if(v.getContext() instanceof Inicio){
                     FragmentTransaction fragmentTransaction=((Inicio) v.getContext()).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaMatriculadores").commit();
+                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaProfesores").commit();
 
                 }
             }
@@ -123,6 +127,8 @@ public class matriculadoresFragment extends Fragment {
 
 
                 final EditText busqueda = new EditText(v.getContext());
+                busqueda.setMaxLines(1);
+                busqueda.setSingleLine(true);
                 busqueda.setHint("Busqueda");
                 layout.addView(busqueda);
 
@@ -133,14 +139,14 @@ public class matriculadoresFragment extends Fragment {
                         String result = busqueda.getText().toString();
                         String selected = spin.getSelectedItem().toString();
                         if (selected.equals("cedula")) {
-                            matriculadoresFragment fragment=new matriculadoresFragment().newInstance(result,null);
+                            profesoresFragment fragment=new profesoresFragment().newInstance(result,null);
                             FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaMatriculadores").commit();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaProfesores").commit();
                         }
                         else if(selected.equals("nombre")){
-                            matriculadoresFragment fragment=new matriculadoresFragment().newInstance(null,result);
+                            profesoresFragment fragment=new profesoresFragment().newInstance(null,result);
                             FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaMatriculadores").commit();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaProfesores").commit();
                         }
                     }
                 });
@@ -162,22 +168,22 @@ public class matriculadoresFragment extends Fragment {
         String urlBase = Variables.getURLBase();
 
         if(mCedula==null && mNombre==null){
-            urlRequest = urlBase + "action=BuscarMatriculador&cedula=&nombre=";
+            urlRequest = urlBase + "action=AllProfesores";
         }
         else if(mCedula!=null && mNombre==null){
-            urlRequest = urlBase + "action=BuscarMatriculador&cedula="+mCedula+"&nombre=";
+            urlRequest = urlBase + "action=BuscarProfesor&cedula="+mCedula+"&nombre=";
         }
-        else urlRequest = urlBase + "action=BuscarMatriculador&cedula=&nombre="+mNombre;
+        else urlRequest = urlBase + "action=BuscarProfesor&cedula=&nombre="+mNombre;
 
-        new matriculadoresFragment.MatriculadorTask(view.getContext(),recyclerV).execute();
+        new ProfesorTask(view.getContext(),recyclerV).execute();
     }
 
 
-    class MatriculadorTask extends AsyncTask<String, String, String>
+    class ProfesorTask extends AsyncTask<String, String, String>
     {
         RecyclerView mRecyclerV;
         Context mContex;
-        public MatriculadorTask(Context contex, RecyclerView rview)
+        public ProfesorTask(Context contex, RecyclerView rview)
         {
             this.mRecyclerV=rview;
             this.mContex=contex;
@@ -188,12 +194,12 @@ public class matriculadoresFragment extends Fragment {
         protected void onPostExecute(String result) {
 
             JSONArray dataArray = null;
-            ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
+            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
             try {
-                if (!result.equals("null")){
-                    matriculadores.clear();
+                if (result!=null){
+                    profesores.clear();
                     dataArray = new JSONArray(result);
-                    Matriculador prof;
+                    Profesor prof;
                     for(int i=0; i<dataArray.length(); i++){
 
                         Usuario user=new Usuario();
@@ -202,7 +208,7 @@ public class matriculadoresFragment extends Fragment {
                         user.setClave(u.getString("clave"));
                         user.setTipo(u.getInt("tipo"));
 
-                        prof = new Matriculador();
+                        prof = new Profesor();
                         prof.setNombre(dataArray.getJSONObject(i).getString("nombre"));
                         prof.setCedula(dataArray.getJSONObject(i).getString("cedula"));
                         prof.setTelefono(dataArray.getJSONObject(i).getString("telefono"));
@@ -210,11 +216,12 @@ public class matriculadoresFragment extends Fragment {
 
                         prof.setUsuario(user);
 
-                        matriculadores.add(prof);
+                        profesores.add(prof);
                     }
-                    AdapterMatriculador adapter=new AdapterMatriculador(mContex, matriculadores);
-                    mRecyclerV.setAdapter(adapter);
+                    AdapterProfesor adapter=new AdapterProfesor(mContex, profesores);
                     mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
+                    mRecyclerV.setAdapter(adapter);
+
                 }
                 else Toast.makeText(mContex, "Error al consultar la base de datos", Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
@@ -261,4 +268,3 @@ public class matriculadoresFragment extends Fragment {
         this.mNombre = mNombre;
     }
 }
-

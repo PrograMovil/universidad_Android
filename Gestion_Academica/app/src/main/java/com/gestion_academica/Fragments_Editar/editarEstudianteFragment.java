@@ -1,11 +1,9 @@
-package com.gestion_academica;
+package com.gestion_academica.Fragments_Editar;
 
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.gestion_academica.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

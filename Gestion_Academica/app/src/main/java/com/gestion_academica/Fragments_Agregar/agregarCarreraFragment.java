@@ -1,4 +1,4 @@
-package com.gestion_academica;
+package com.gestion_academica.Fragments_Agregar;
 
 
 import android.content.Context;
@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gestion_academica.R;
+import com.gestion_academica.Variables;
 
 import org.json.JSONException;
 import org.json.JSONObject;

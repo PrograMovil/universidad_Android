@@ -13,6 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.gestion_academica.Main_Fragments.administradoresFragment;
+import com.gestion_academica.Main_Fragments.carrerasFragment;
+import com.gestion_academica.Main_Fragments.estudiantesFragment;
+import com.gestion_academica.Main_Fragments.matriculadoresFragment;
+import com.gestion_academica.Main_Fragments.profesoresFragment;
+
 public class Inicio extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -121,6 +127,11 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
                 FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
 
+            };break;
+            case R.id.nav_administradores:{
+                administradoresFragment fragment=new administradoresFragment();
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
             };break;
             case R.id.nav_ciclo:{
 

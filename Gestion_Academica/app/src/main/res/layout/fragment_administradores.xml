@@ -9,15 +9,15 @@
         android:id="@+id/textListaP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lista de Matriculadores"
+        android:text="Lista de Administradores"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:layout_alignTop="@+id/floatingBuscarMatriculador"
+        android:layout_alignTop="@+id/floatingBuscarAdministrador"
         android:layout_alignParentStart="true" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingAgregarMatriculador"
+        android:id="@+id/floatingAgregarAdministrador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -30,29 +30,24 @@
         android:layout_marginRight="10dp"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingBuscarMatriculador"
+        android:id="@+id/floatingBuscarAdministrador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="70dp"
         android:clickable="true"
         app:fabSize="mini"
         app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/listMatriculador"
+        android:id="@+id/listAdministrador"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="com.gestion_academica.Main_Fragments.matriculadoresFragment"
-        tools:listitem="@layout/fila_matriculador"
-        android:layout_below="@+id/textListaP"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_height="match_parent"
+        tools:context="com.gestion_academica.Main_Fragments.administradoresFragment"
+        tools:listitem="@layout/fila_administrador"
+        android:layout_below="@+id/textListaP" />
 
 
 </RelativeLayout>

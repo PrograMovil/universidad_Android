@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gestion_academica.Fragments_Editar.editarMatriculadorFragment">
+    tools:context="com.gestion_academica.Fragments_Agregar.agregarAdministradorFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,37 +16,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/cedulaText"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="99dp"
-                android:text="Cedula"
-                android:textSize="18sp"
-                android:layout_marginStart="50dp"
+                android:layout_marginTop="70dp"
+                android:id="@+id/cedulawidgetAdministrador"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
+                android:layout_toEndOf="@+id/imageView7"
+                android:layout_marginStart="21dp">
 
-            <TextView
-                android:id="@+id/cedulaMatriculador"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cedula"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textSize="18sp"
-                android:layout_alignTop="@+id/cedulaText"
-                android:layout_centerHorizontal="true" />
+                <EditText
+                    android:id="@+id/cedulaAdministrador"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Cedula"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:maxLength="20"/>
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cedulaText"
+                android:layout_below="@+id/cedulawidgetAdministrador"
                 android:layout_marginTop="20dp"
-                android:id="@+id/nombrewidgetMatriculador"
-                android:layout_alignStart="@+id/cedulaText">
+                android:id="@+id/nombrewidgetAdministrador"
+                android:layout_alignStart="@+id/cedulawidgetAdministrador">
 
                 <EditText
-                    android:id="@+id/nombreMatriculador"
+                    android:id="@+id/nombreAdministrador"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
                     android:hint="Nombre"
@@ -61,13 +59,13 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nombrewidgetMatriculador"
+                android:layout_below="@+id/nombrewidgetAdministrador"
                 android:layout_marginTop="20dp"
-                android:id="@+id/telefonoWidgetMat"
-                android:layout_alignStart="@+id/cedulaText">
+                android:id="@+id/telefonoWidgetAdm"
+                android:layout_alignStart="@+id/cedulawidgetAdministrador">
 
                 <EditText
-                    android:id="@+id/telefonoMatriculador"
+                    android:id="@+id/telefonoAdministrador"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
                     android:hint="Telefono"
@@ -80,33 +78,32 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/telefonoWidgetMat"
+                android:layout_below="@+id/telefonoWidgetAdm"
                 android:layout_marginTop="20dp"
-                android:id="@+id/emailWidgetMat"
-                android:layout_alignStart="@+id/cedulaText">
+                android:id="@+id/emailWidgetAdm"
+                android:layout_alignStart="@+id/cedulawidgetAdministrador">
 
                 <EditText
-                    android:id="@+id/emailMatriculador"
+                    android:id="@+id/emailAdministrador"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:maxLength="25"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/emailWidgetMat"
+                android:layout_below="@+id/emailWidgetAdm"
                 android:layout_marginTop="20dp"
-                android:id="@+id/contrasenaWidgetMat"
-                android:layout_alignStart="@+id/cedulaText">
+                android:id="@+id/contrasenaWidgetAdm"
+                android:layout_alignStart="@+id/cedulawidgetAdministrador">
 
                 <EditText
-                    android:id="@+id/contrasenaMatriculador"
+                    android:id="@+id/contrasenaAdministrador"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
                     android:hint="Contraseña"
@@ -118,10 +115,10 @@
 
 
             <Button
-                android:id="@+id/botonGuardarMatriculador"
+                android:id="@+id/botonGuardarAdministrador"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contrasenaWidgetMat"
+                android:layout_below="@+id/contrasenaWidgetAdm"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
@@ -132,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/avatar"
-                android:layout_above="@+id/telefonoWidgetMat"
+                android:layout_above="@+id/telefonoWidgetAdm"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="13dp"
                 android:layout_marginBottom="11dp" />
@@ -142,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/callanswer"
-                android:layout_above="@+id/emailWidgetMat"
+                android:layout_above="@+id/emailWidgetAdm"
                 android:layout_alignStart="@+id/imageView7"
                 android:layout_marginBottom="11dp" />
 
@@ -151,10 +148,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/email"
-                android:layout_alignBottom="@+id/emailWidgetMat"
+                android:layout_alignBottom="@+id/emailWidgetAdm"
                 android:layout_alignStart="@+id/imageView8"
                 android:layout_marginBottom="14dp" />
-
         </RelativeLayout>
     </ScrollView>
 

@@ -45,9 +45,9 @@
         android:id="@+id/listProfesor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.gestion_academica.profesoresFragment"
-        tools:listitem="@layout/fila_profesor"
-        android:layout_below="@+id/textListaP" />
+        tools:context="com.gestion_academica.Main_Fragments.profesoresFragment"
+    tools:listitem="@layout/fila_profesor"
+    android:layout_below="@+id/textListaP" />
 
 
-</RelativeLayout>
+    </RelativeLayout>

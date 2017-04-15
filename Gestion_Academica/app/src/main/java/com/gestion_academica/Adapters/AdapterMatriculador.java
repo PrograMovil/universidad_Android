@@ -1,31 +1,35 @@
-package com.gestion_academica;
+package com.gestion_academica.Adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+
+import com.gestion_academica.Inicio;
+import com.gestion_academica.R;
+import com.gestion_academica.Fragments_Editar.editarMatriculadorFragment;
 
 import java.util.ArrayList;
 
-import LogicaNegocio.Profesor;
-
-public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHolder>{
+import LogicaNegocio.Matriculador;
 
 
-    private static ArrayList<Profesor> mProfesores;
+
+public class AdapterMatriculador extends RecyclerView.Adapter<AdapterMatriculador.ViewHolder>{
+
+
+    private static ArrayList<Matriculador> mMatriculadores;
     private static Context mContext;
     private int mExpandedPosition=-1;
 
 
-    public AdapterProfesor(Context context, ArrayList<Profesor> profesores) {
-        mProfesores = profesores;
+    public AdapterMatriculador(Context context, ArrayList<Matriculador> matriculadores) {
+        mMatriculadores = matriculadores;
         mContext = context;
     }
 
@@ -51,13 +55,13 @@ public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHo
             super(itemView);
 
             this.context = context;
-            nombre = (TextView) itemView.findViewById(R.id.nombreProfesor);
-            cedula = (TextView) itemView.findViewById(R.id.cedulaProfesor);
-            telefono=(TextView) itemView.findViewById(R.id.telefonoProfesor);
-            email=(TextView) itemView.findViewById(R.id.emailProfesor);
+            nombre = (TextView) itemView.findViewById(R.id.nombreMatriculador);
+            cedula = (TextView) itemView.findViewById(R.id.cedulaMatriculador);
+            telefono=(TextView) itemView.findViewById(R.id.telefonoMatriculador);
+            email=(TextView) itemView.findViewById(R.id.emailMatriculador);
             textoTel=(TextView) itemView.findViewById(R.id.textView7);
             textoEm=(TextView) itemView.findViewById(R.id.textView8);
-            botonEditar=(TextView) itemView.findViewById(R.id.botonEditarProfesor);
+            botonEditar=(TextView) itemView.findViewById(R.id.botonEditarMatriculador);
 
 
             botonEditar.setOnClickListener(new View.OnClickListener() {
@@ -65,14 +69,13 @@ public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHo
                 public void onClick(View v) {
                     int position = getAdapterPosition(); // gets item position
                     if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                        Profesor profesor = mProfesores.get(position);
+                        Matriculador matriculador = mMatriculadores.get(position);
 
 
-                        Fragment newFragment=new editarProfesorFragment().newInstance(profesor);
+                        Fragment newFragment=new editarMatriculadorFragment().newInstance(matriculador);
                         if(mContext instanceof Inicio){
-
                             FragmentTransaction fragmentTransaction=((Inicio) mContext).getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaProfesores").commit();
+                            fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaMatriculadores").commit();
 
                         }
 
@@ -90,33 +93,33 @@ public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHo
 
 
     @Override
-    public AdapterProfesor.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterMatriculador.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View contactView = inflater.inflate(R.layout.fila_profesor, parent, false);
+        View contactView = inflater.inflate(R.layout.fila_matriculador, parent, false);
 
-        AdapterProfesor.ViewHolder viewHolder = new AdapterProfesor.ViewHolder(context,contactView);
+        AdapterMatriculador.ViewHolder viewHolder = new AdapterMatriculador.ViewHolder(context,contactView);
         return viewHolder;
     }
 
 
     @Override
-    public void onBindViewHolder(final AdapterProfesor.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final AdapterMatriculador.ViewHolder viewHolder, int position) {
         // Get the data model based on position
-        Profesor profesor = null;
-        profesor = (Profesor) mProfesores.get(position);
+        Matriculador matriculador = null;
+        matriculador = (Matriculador) mMatriculadores.get(position);
 
         final int p=position;
         // Set item views based on your views and data model
         TextView codigo = viewHolder.cedula;
-        codigo.setText(profesor.getCedula());
+        codigo.setText(matriculador.getCedula());
         TextView nombre = viewHolder.nombre;
-        nombre.setText(profesor.getNombre());
+        nombre.setText(matriculador.getNombre());
         TextView telefono = viewHolder.telefono;
-        telefono.setText(profesor.getTelefono());
+        telefono.setText(matriculador.getTelefono());
         TextView email = viewHolder.email;
-        email.setText(profesor.getEmail());
+        email.setText(matriculador.getEmail());
 
         final boolean isExpanded = position== mExpandedPosition;
         viewHolder.telefono.setVisibility(isExpanded?View.VISIBLE:View.GONE);
@@ -138,7 +141,7 @@ public class AdapterProfesor extends RecyclerView.Adapter<AdapterProfesor.ViewHo
 
     @Override
     public int getItemCount() {
-        return mProfesores.size();
+        return mMatriculadores.size();
     }
 
 

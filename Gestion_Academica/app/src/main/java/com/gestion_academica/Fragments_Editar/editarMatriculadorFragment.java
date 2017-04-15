@@ -1,4 +1,4 @@
-package com.gestion_academica;
+package com.gestion_academica.Fragments_Editar;
 
 
 import android.content.DialogInterface;
@@ -13,6 +13,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.gestion_academica.R;
+import com.gestion_academica.Variables;
+import com.gestion_academica.asyncTask;
 
 import LogicaNegocio.Matriculador;
 
