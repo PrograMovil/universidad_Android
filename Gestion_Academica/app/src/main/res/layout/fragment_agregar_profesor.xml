@@ -8,7 +8,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="70dp"
         android:id="@+id/cedulawidgetProfesor"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/imageView7"
@@ -18,7 +18,8 @@
             android:id="@+id/cedulaProfesor"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="Cedula" />
+            android:hint="Cedula"
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -33,7 +34,8 @@
             android:id="@+id/nombreProfesor"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="Nombre" />
+            android:hint="Nombre"
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
 
@@ -49,7 +51,8 @@
             android:id="@+id/telefonoProfesor"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="Telefono" />
+            android:hint="Telefono"
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -64,7 +67,8 @@
             android:id="@+id/emailProfesor"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="Email" />
+            android:hint="Email"
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -79,7 +83,8 @@
             android:id="@+id/contrasenaProfesor"
             android:layout_width="266dp"
             android:layout_height="wrap_content"
-            android:hint="Contraseña" />
+            android:hint="Contraseña"
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
 

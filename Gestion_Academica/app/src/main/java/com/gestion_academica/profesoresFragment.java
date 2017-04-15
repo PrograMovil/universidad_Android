@@ -211,8 +211,9 @@ public class profesoresFragment extends Fragment{
                         profesores.add(prof);
                     }
                     AdapterProfesor adapter=new AdapterProfesor(mContex, profesores);
-                    mRecyclerV.setAdapter(adapter);
                     mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
+                    mRecyclerV.setAdapter(adapter);
+
                 }
                 else Toast.makeText(mContex, "Error al consultar la base de datos", Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
