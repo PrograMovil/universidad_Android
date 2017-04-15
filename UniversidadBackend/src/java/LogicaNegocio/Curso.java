@@ -86,5 +86,12 @@ public class Curso implements Serializable{
     public void setCiclo(String ciclo) {
         this.ciclo = ciclo;
     }
+
+    @Override
+    public String toString() {
+        return "Curso{" + "codigo=" + codigo + ", nombre=" + nombre + ", creditos=" + creditos + ", horasSemanales=" + horasSemanales + ", " + carrera.toString() + ", nivel=" + nivel + ", ciclo=" + ciclo + '}';
+    }
+    
+    
     
 }

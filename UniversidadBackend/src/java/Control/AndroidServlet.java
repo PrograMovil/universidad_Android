@@ -88,7 +88,7 @@ public class AndroidServlet extends HttpServlet {
         ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
         ArrayList<Administrador> administradores = new ArrayList<Administrador>();
         ArrayList<Curso> cursos = new ArrayList<Curso>();
-        
+        ArrayList<Grupo> grupos = new ArrayList<Grupo>();
         
 //        ArrayList<Carrera> allCarreras = null;
 //        
@@ -153,49 +153,99 @@ public class AndroidServlet extends HttpServlet {
                     break;
                     case "AllCarreras" : {
                         carreras.clear();
-                        carreras = ctrl.obtenerTodasCarreras();           
-                        String carrerasJSON  = gson.toJson(carreras);
-//                        Object obj = gson.fromJson(carrerasJSON, Object.class);
-//                        ArrayList<Object> objs = (ArrayList<Object>) obj;
-//                        for( Object o : objs ) {
-//                            System.out.println(o.toString());
-//                        }
-                        response.getWriter().write(carrerasJSON);
+                        carreras = ctrl.obtenerTodasCarreras();  
+                        if(carreras.size() == 0){
+                            error.setMsg("Aun no existen Profesores Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String carrerasJSON  = gson.toJson(carreras);
+//                            Object obj = gson.fromJson(carrerasJSON, Object.class);
+//                            ArrayList<Object> objs = (ArrayList<Object>) obj;
+//                            for( Object o : objs ) {
+//                                System.out.println(o.toString());
+//                            }
+                            response.getWriter().write(carrerasJSON);   
+                        }
                     }
                     break;
                     case "AllProfesores" : {
                         profesores.clear();
-                        profesores = ctrl.obtenerTodosLosProfesores();           
-                        String profesoresJSON  = gson.toJson(profesores);
-                        response.getWriter().write(profesoresJSON);
+                        profesores = ctrl.obtenerTodosLosProfesores();   
+                        if(profesores.size() == 0){
+                            error.setMsg("Aun no existen Profesores Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String profesoresJSON  = gson.toJson(profesores);
+                            response.getWriter().write(profesoresJSON);
+                        }
                     }
                     break;
                     case "AllEstudiantes" : {
                         estudiantes.clear();
-                        estudiantes = ctrl.obtenerTodosLosEstudiantes();           
-                        String estudiantesJSON  = gson.toJson(estudiantes);
-                        response.getWriter().write(estudiantesJSON);
+                        estudiantes = ctrl.obtenerTodosLosEstudiantes();  
+                        if(estudiantes.size() == 0){
+                            error.setMsg("Aun no existen Estudiantes Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String estudiantesJSON  = gson.toJson(estudiantes);
+                            response.getWriter().write(estudiantesJSON);
+                        }
                     }
                     break;
                     case "AllMatriculadores" : {
                         matriculadores.clear();
                         matriculadores = ctrl.obtenerTodosLosMatriculadores();           
-                        String matriculadoresJSON  = gson.toJson(matriculadores);
-                        response.getWriter().write(matriculadoresJSON);
+                        if(matriculadores.size() == 0){
+                            error.setMsg("Aun no existen Matriculadores Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String matriculadoresJSON  = gson.toJson(matriculadores);
+                            response.getWriter().write(matriculadoresJSON);
+                        }
                     }
                     break;
                     case "AllAdministradores" : {
                         administradores.clear();
-                        administradores = ctrl.obtenerTodosLosAdministradores();           
-                        String administradoresJSON  = gson.toJson(administradores);
-                        response.getWriter().write(administradoresJSON);
+                        administradores = ctrl.obtenerTodosLosAdministradores(); 
+                        if(administradores.size() == 0){
+                            error.setMsg("Aun no existen Administradores Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String administradoresJSON  = gson.toJson(administradores);
+                            response.getWriter().write(administradoresJSON);
+                        }                        
                     }
                     break;
                     case "AllCursos" : {
                         cursos.clear();
-                        cursos = ctrl.obtenerTodosLosCursos();           
-                        String cursosJSON  = gson.toJson(cursos);
-                        response.getWriter().write(cursosJSON);
+                        cursos = ctrl.obtenerTodosLosCursos();    
+                        if(cursos.size() == 0){
+                            error.setMsg("Aun no existen Cursos Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String cursosJSON  = gson.toJson(cursos);
+                            response.getWriter().write(cursosJSON);
+                        }                        
+                    }
+                    break;
+                    case "AllGruposPorCurso" : {
+                        String codigoCurso = request.getParameter("codigoCurso");
+                        grupos.clear();
+                        Curso curso = ctrl.getCurso(codigoCurso);
+                        if(curso == null){
+                            error.setMsg("ERROR: Código de Curso Incorrecto!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            System.out.println(curso.toString());
+                            grupos = ctrl.gruposPorCurso(curso);    
+                            if(cursos.size() == 0){
+                                error.setMsg("Aun no existen Grupos Registrados!");
+                                response.getWriter().write(gson.toJson(error));
+                            }else{
+                                String gruposJSON  = gson.toJson(grupos);
+                                response.getWriter().write(gruposJSON);
+                            }
+                        }                        
                     }
                     break;
                     case "AgregarCarrera": {
@@ -537,15 +587,20 @@ public class AndroidServlet extends HttpServlet {
                         String nivel = request.getParameter("nivel");
                         String ciclo = request.getParameter("ciclo");
                         Carrera ca = ctrl.getCarrera(idCarrera);
-                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
-                        cu.setCiclo(ciclo);
-                        if(ctrl.addCurso(cu) == 1){
-                            success.setMsg("Curso Agregado!");
-                            response.getWriter().write(gson.toJson(success));
-                        }else{
-                            error.setMsg("ERROR: Curso NO Agregado!");
+                        if(ca == null){
+                            error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
-                        }
+                        }else{
+                            Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
+                            cu.setCiclo(ciclo);
+                            if(ctrl.addCurso(cu) == 1){
+                                success.setMsg("Curso Agregado!");
+                                response.getWriter().write(gson.toJson(success));
+                            }else{
+                                error.setMsg("ERROR: Curso NO Agregado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }                        
                     }
                     break;
                     case "EditarCurso": {
@@ -557,14 +612,19 @@ public class AndroidServlet extends HttpServlet {
                         String nivel = request.getParameter("nivel");
                         String ciclo = request.getParameter("ciclo");
                         Carrera ca = ctrl.getCarrera(idCarrera);
-                        Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
-                        cu.setCiclo(ciclo);
-                        if(ctrl.updateCurso(cu) == 1){
-                            success.setMsg("Curso Actualizado!");
-                            response.getWriter().write(gson.toJson(success));
-                        }else{
-                            error.setMsg("ERROR: Curso NO Actualizado!");
+                        if(ca == null){
+                            error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
+                        }else{
+                            Curso cu = new Curso(codigo,nombre,Integer.parseInt(creditos),Integer.parseInt(horasSemanales),ca,nivel);
+                            cu.setCiclo(ciclo);
+                            if(ctrl.updateCurso(cu) == 1){
+                                success.setMsg("Curso Actualizado!");
+                                response.getWriter().write(gson.toJson(success));
+                            }else{
+                                error.setMsg("ERROR: Curso NO Actualizado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
                         }
                     }
                     break;
@@ -703,19 +763,6 @@ public class AndroidServlet extends HttpServlet {
 
         
         
-    }
-    
-    public void printHTML(String msg, HttpServletResponse response) throws IOException{
-        PrintWriter out = response.getWriter();
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Mensaje</title>");            
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>"+msg+"</h1>");
-        out.println("</body>");
-        out.println("</html>");
     }
 
     
