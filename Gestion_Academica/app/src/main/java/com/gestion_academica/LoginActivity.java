@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
 
             try {
-                if (result != null){
+                if (!result.equals("null")){
                     JSONObject data = new JSONObject(result);
                     String id = data.getString("id");
                     Toast.makeText(LoginActivity.this, id, Toast.LENGTH_LONG).show();
@@ -173,9 +173,6 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("Resultao del Login: "+ valueResult);
 
                 result = valueResult;
-
-                Intent intent=new Intent(LoginActivity.this,Inicio.class);
-                LoginActivity.this.startActivity(intent);
                 return result;
 
             } catch (MalformedURLException e) {

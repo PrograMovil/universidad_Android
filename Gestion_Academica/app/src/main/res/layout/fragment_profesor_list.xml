@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+    <TextView
+        android:id="@+id/textListaP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista de Profesores"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/floatingBuscarProfesor"
+        android:layout_alignParentStart="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingAgregarProfesor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:layout_alignTop="@+id/textListaP"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingBuscarProfesor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="72dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listProfesor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.gestion_academica.profesoresFragment"
+        tools:listitem="@layout/fila_profesor"
+        android:layout_below="@+id/textListaP"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

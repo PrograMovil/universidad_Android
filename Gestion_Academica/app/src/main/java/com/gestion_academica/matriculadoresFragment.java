@@ -1,9 +1,8 @@
 package com.gestion_academica;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,33 +34,32 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import LogicaNegocio.Carrera;
+import LogicaNegocio.Matriculador;
+import LogicaNegocio.Usuario;
 
 
-public class carrerasFragment extends Fragment {
-
-
+public class matriculadoresFragment extends Fragment {
     String urlRequest;
     String result = "";
-    String mcodigo=null;
-    String mnombre=null;
+    String mCedula=null;
+    String mNombre=null;
 
-    public carrerasFragment() {
-        // Required empty public constructor
+
+    public matriculadoresFragment(){
+
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public static carrerasFragment newInstance(String codigo, String nombre) {
-        carrerasFragment fragment = new carrerasFragment();
-        if(codigo!=null)
-            fragment.setMcodigo(codigo);
+    public static matriculadoresFragment newInstance(String cedula, String nombre) {
+        matriculadoresFragment fragment = new matriculadoresFragment();
+        if(cedula!=null)
+            fragment.setmCedula(cedula);
         if(nombre!=null)
-            fragment.setMnombre(nombre);
+            fragment.setmNombre(nombre);
 
         Bundle args = new Bundle();
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class carrerasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_carreras, container, false);
+        View v=inflater.inflate(R.layout.fragment_matriculadores, container, false);
 
 
         return v;
@@ -81,23 +79,22 @@ public class carrerasFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.rvCarreras);
+        RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.listMatriculador);
+        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarMatriculador);
+        FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarMatriculador);
 
-        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarCarrera);
-        FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarCarrera);
 
         botonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment=new agregarCarreraFragment();
+                Fragment newFragment=new agregarMatriculadorFragment();
                 if(v.getContext() instanceof Inicio){
                     FragmentTransaction fragmentTransaction=((Inicio) v.getContext()).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaCarreras").commit();
+                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaMatriculadores").commit();
 
                 }
             }
         });
-
 
 
         botonBuscar.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +115,7 @@ public class carrerasFragment extends Fragment {
 
                 final Spinner spin=new Spinner(v.getContext());
                 List<String> listaSpin=new ArrayList<String>();
-                listaSpin.add("codigo");
+                listaSpin.add("cedula");
                 listaSpin.add("nombre");
                 ArrayAdapter<String> adapter =new ArrayAdapter<String>(v.getContext(),android.R.layout.simple_spinner_item,listaSpin);
                 spin.setAdapter(adapter);
@@ -135,15 +132,15 @@ public class carrerasFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String result = busqueda.getText().toString();
                         String selected = spin.getSelectedItem().toString();
-                        if (selected.equals("codigo")) {
-                            carrerasFragment fragment=new carrerasFragment().newInstance(result,null);
+                        if (selected.equals("cedula")) {
+                            matriculadoresFragment fragment=new matriculadoresFragment().newInstance(result,null);
                             FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaCarreras").commit();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaMatriculadores").commit();
                         }
                         else if(selected.equals("nombre")){
-                            carrerasFragment fragment=new carrerasFragment().newInstance(null,result);
+                            matriculadoresFragment fragment=new matriculadoresFragment().newInstance(null,result);
                             FragmentTransaction fragmentTransaction=getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaCarreras").commit();
+                            fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("ListaMatriculadores").commit();
                         }
                     }
                 });
@@ -158,26 +155,29 @@ public class carrerasFragment extends Fragment {
             }
         });
 
+
+
+
+
         String urlBase = Variables.getURLBase();
 
-        if(mcodigo==null && mnombre==null){
-        urlRequest = urlBase + "action=AllCarreras";
+        if(mCedula==null && mNombre==null){
+            urlRequest = urlBase + "action=BuscarMatriculador&cedula=&nombre=";
         }
-        else if(mcodigo!=null && mnombre==null){
-            urlRequest = urlBase + "action=BuscarCarrera&codigo="+mcodigo+"&nombre=";
+        else if(mCedula!=null && mNombre==null){
+            urlRequest = urlBase + "action=BuscarMatriculador&cedula="+mCedula+"&nombre=";
         }
-        else urlRequest = urlBase + "action=BuscarCarrera&codigo=&nombre="+mnombre;
+        else urlRequest = urlBase + "action=BuscarMatriculador&cedula=&nombre="+mNombre;
 
-        new CarrerasTask(view.getContext(),recyclerV).execute();
+        new matriculadoresFragment.MatriculadorTask(view.getContext(),recyclerV).execute();
     }
 
 
-
-    class CarrerasTask extends AsyncTask<String, String, String>
+    class MatriculadorTask extends AsyncTask<String, String, String>
     {
         RecyclerView mRecyclerV;
         Context mContex;
-        public CarrerasTask(Context contex, RecyclerView rview)
+        public MatriculadorTask(Context contex, RecyclerView rview)
         {
             this.mRecyclerV=rview;
             this.mContex=contex;
@@ -188,22 +188,33 @@ public class carrerasFragment extends Fragment {
         protected void onPostExecute(String result) {
 
             JSONArray dataArray = null;
-            ArrayList<Carrera> carreras = new ArrayList<Carrera>();
+            ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
             try {
                 if (!result.equals("null")){
-                        carreras.clear();
-                        dataArray = new JSONArray(result);
-                        Carrera car;
-                        for(int i=0; i<dataArray.length(); i++){
-                            car = new Carrera();
-                            car.setCodigo(dataArray.getJSONObject(i).getString("codigo"));
-                            car.setNombre(dataArray.getJSONObject(i).getString("nombre"));
-                            car.setTitulo(dataArray.getJSONObject(i).getString("titulo"));
-                            carreras.add(car);
-                        }
-                        AdapterCarrera adapter=new AdapterCarrera(mContex, carreras);
-                        mRecyclerV.setAdapter(adapter);
-                        mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
+                    matriculadores.clear();
+                    dataArray = new JSONArray(result);
+                    Matriculador prof;
+                    for(int i=0; i<dataArray.length(); i++){
+
+                        Usuario user=new Usuario();
+                        JSONObject u=dataArray.getJSONObject(i).getJSONObject("usuario");
+                        user.setId(u.getString("id"));
+                        user.setClave(u.getString("clave"));
+                        user.setTipo(u.getInt("tipo"));
+
+                        prof = new Matriculador();
+                        prof.setNombre(dataArray.getJSONObject(i).getString("nombre"));
+                        prof.setCedula(dataArray.getJSONObject(i).getString("cedula"));
+                        prof.setTelefono(dataArray.getJSONObject(i).getString("telefono"));
+                        prof.setEmail(dataArray.getJSONObject(i).getString("email"));
+
+                        prof.setUsuario(user);
+
+                        matriculadores.add(prof);
+                    }
+                    AdapterMatriculador adapter=new AdapterMatriculador(mContex, matriculadores);
+                    mRecyclerV.setAdapter(adapter);
+                    mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
                 }
                 else Toast.makeText(mContex, "Error al consultar la base de datos", Toast.LENGTH_LONG).show();
             } catch (JSONException e) {
@@ -239,11 +250,15 @@ public class carrerasFragment extends Fragment {
     }
 
 
-    public void setMcodigo(String mcodigo) {
-        this.mcodigo = mcodigo;
+
+
+
+    public void setmCedula(String mCedula) {
+        this.mCedula = mCedula;
     }
 
-    public void setMnombre(String mnombre) {
-        this.mnombre = mnombre;
+    public void setmNombre(String mNombre) {
+        this.mNombre = mNombre;
     }
 }
+
