@@ -2,6 +2,7 @@ package com.gestion_academica;
 
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView nombre;
         public TextView codigo;
         public TextView titulo;
@@ -63,27 +64,30 @@ public class AdapterCarrera extends RecyclerView.Adapter<AdapterCarrera.ViewHold
             titulo = (TextView) itemView.findViewById(R.id.tituloCarrera);
             botonEditar=(ImageButton) itemView.findViewById(R.id.botonEditarCarrera);
 
-            botonEditar.setOnClickListener(this);
 
-        }
+            botonEditar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition(); // gets item position
+                    if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                        Carrera carrera = mCarreras.get(position);
 
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition(); // gets item position
-            if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                Carrera carrera = mCarreras.get(position);
+                        Toast.makeText(v.getContext(), (mCarreras.get(position)).getCodigo(), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(context, (mCarreras.get(position)).getCodigo(), Toast.LENGTH_SHORT).show();
+                        Fragment newFragment=new editarCarreraFragment().newInstance(carrera);
+                        if(mContext instanceof Inicio){
+                            FragmentTransaction fragmentTransaction=((Inicio) mContext).getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaCarreras").commit();
 
-                Fragment newFragment=new editarCarreraFragment().newInstance(carrera);
-                if(mContext instanceof Inicio){
-                    FragmentTransaction fragmentTransaction=((Inicio) mContext).getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaCarreras").commit();
+                        }
 
+                    }
                 }
+            });
 
-            }
         }
+
+
     }
 
 

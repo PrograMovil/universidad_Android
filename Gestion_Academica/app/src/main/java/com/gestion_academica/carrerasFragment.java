@@ -83,9 +83,24 @@ public class carrerasFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.rvCarreras);
 
-        FloatingActionButton botonFlotante=(FloatingActionButton) view.findViewById(R.id.floatingActionButtonCarreras);
+        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarCarrera);
+        FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarCarrera);
 
-        botonFlotante.setOnClickListener(new View.OnClickListener() {
+        botonAgregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment newFragment=new agregarCarreraFragment();
+                if(v.getContext() instanceof Inicio){
+                    FragmentTransaction fragmentTransaction=((Inicio) v.getContext()).getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaCarreras").commit();
+
+                }
+            }
+        });
+
+
+
+        botonBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
