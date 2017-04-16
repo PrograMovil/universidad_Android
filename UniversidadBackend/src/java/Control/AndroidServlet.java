@@ -620,8 +620,8 @@ public class AndroidServlet extends HttpServlet {
                         String idCarrera = request.getParameter("idCarrera");
                         String nivel = request.getParameter("nivel");
                         String ciclo = request.getParameter("ciclo");
-                        Carrera ca = ctrl.getCarrera(idCarrera);
-                        if(ca == null){
+                        Carrera ca;
+                        if((ca = ctrl.getCarrera(idCarrera)) == null){
                             error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
                         }else{
@@ -646,8 +646,8 @@ public class AndroidServlet extends HttpServlet {
                         String idCarrera = request.getParameter("idCarrera");
                         String nivel = request.getParameter("nivel");
                         String ciclo = request.getParameter("ciclo");
-                        Carrera ca = ctrl.getCarrera(idCarrera);
-                        if(ca == null){
+                        Carrera ca;
+                        if((ca = ctrl.getCarrera(idCarrera)) == null){
                             error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
                         }else{
@@ -717,16 +717,16 @@ public class AndroidServlet extends HttpServlet {
                         }
                         Horario hora = new Horario(diasStr,horaInicio,horaFinal);
                         Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
-                        Profesor profe = ctrl.getProfesor(idProfesor);
-                        Curso cur = ctrl.getCurso(idCurso);
-                        if(profe == null){
+                        Profesor profe;
+                        Curso cur;
+                        if((profe = ctrl.getProfesor(idProfesor)) == null){
                             error.setMsg("ERROR: Cedula del Profesor Incorrecta!");
                             response.getWriter().write(gson.toJson(error));
-                        }else if(cur == null){
+                        }else if((cur = ctrl.getCurso(idCurso)) == null){
                             error.setMsg("ERROR: Código de Curso Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
                         }else{
-                            System.out.println("Agregando Grupo a " + cur.getNombre() + "...");
+                            System.out.println("Agregando Grupo a " + cur.getNombre() + " con Profesor: " + profe.getNombre() + "...");
                             Grupo gru = new Grupo(Integer.parseInt(numero),hora,profe,cur,ci);
                             if(ctrl.addGrupo(gru) == 1){
                                 success.setMsg("Grupo Agregado!");
