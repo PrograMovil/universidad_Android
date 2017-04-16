@@ -117,6 +117,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "Ingresar": {
+                        System.out.println("Ingresando...");
                         String id = request.getParameter("id");
                         String pass = request.getParameter("password");
                         int tipoUsuario = ctrl.verificaUsuario(id, pass);
@@ -152,6 +153,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllCarreras" : {
+                        System.out.println("Mostrando todas las Carreras...");
                         carreras.clear();
                         carreras = ctrl.obtenerTodasCarreras();  
                         if(carreras.size() == 0){
@@ -169,6 +171,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllProfesores" : {
+                        System.out.println("Mostrando todos los Profesores...");
                         profesores.clear();
                         profesores = ctrl.obtenerTodosLosProfesores();   
                         if(profesores.size() == 0){
@@ -181,6 +184,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllEstudiantes" : {
+                        System.out.println("Mostrando todos los Estudiantes...");
                         estudiantes.clear();
                         estudiantes = ctrl.obtenerTodosLosEstudiantes();  
                         if(estudiantes.size() == 0){
@@ -193,6 +197,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllMatriculadores" : {
+                        System.out.println("Mostrando todos los Matriculadores...");
                         matriculadores.clear();
                         matriculadores = ctrl.obtenerTodosLosMatriculadores();           
                         if(matriculadores.size() == 0){
@@ -205,6 +210,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllAdministradores" : {
+                        System.out.println("Mostrando todos los Administradores...");
                         administradores.clear();
                         administradores = ctrl.obtenerTodosLosAdministradores(); 
                         if(administradores.size() == 0){
@@ -217,6 +223,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AllCursos" : {
+                        System.out.println("Mostrando todos los Cursos...");
                         cursos.clear();
                         cursos = ctrl.obtenerTodosLosCursos();    
                         if(cursos.size() == 0){
@@ -231,12 +238,13 @@ public class AndroidServlet extends HttpServlet {
                     case "AllGruposPorCurso" : {
                         String codigoCurso = request.getParameter("codigoCurso");
                         grupos.clear();
-                        Curso curso = ctrl.getCurso(codigoCurso);
-                        if(curso == null){
+                        Curso curso;
+                        if((curso = ctrl.getCurso(codigoCurso)) == null){
                             error.setMsg("ERROR: Código de Curso Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
                         }else{
                             System.out.println(curso.toString());
+                            System.out.println("Mostrando todos los Grupos de " + curso.getNombre() + "...");
                             grupos = ctrl.gruposPorCurso(curso);    
                             if(cursos.size() == 0){
                                 error.setMsg("Aun no existen Grupos Registrados!");
@@ -249,6 +257,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarCarrera": {
+                        System.out.println("Agregando Carrera...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         String titulo = request.getParameter("titulo");
@@ -263,6 +272,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "BuscarCarrera": {
+                        System.out.println("Buscando Carreras...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         if(codigo != "" && nombre == ""){
@@ -291,6 +301,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "EditarCarrera":{
+                        System.out.println("Editando Carrera...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         String titulo = request.getParameter("titulo");
@@ -306,6 +317,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarProfesor": {
+                        System.out.println("Agregando Profesor...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -323,6 +335,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "BuscarProfesor": {
+                        System.out.println("Buscando Profesores...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         if(cedula != "" && nombre == ""){
@@ -351,6 +364,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "EditarProfesor":{
+                        System.out.println("Editando Profesor...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -369,6 +383,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarEstudiante": {
+                        System.out.println("Agregando Estudiante...");
                         String cedula = request.getParameter("cedula");
                         String fechaNacString = request.getParameter("fechaNac");
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -380,18 +395,24 @@ public class AndroidServlet extends HttpServlet {
                         String email = request.getParameter("email");
                         String password = request.getParameter("password");
                         Usuario user = new Usuario(cedula,password,4);
-                        Carrera carrera = ctrl.getCarrera(idCarrera);
-                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
-                        if(ctrl.addEstudiante(es) == 1){
-                            success.setMsg("Estudiante Arregado!");
-                            response.getWriter().write(gson.toJson(success));
-                        }else{
-                            error.setMsg("ERROR: Estudiante NO Agregado!");
+                        Carrera carrera;
+                        if((carrera = ctrl.getCarrera(idCarrera)) == null){
+                            error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
-                        }
+                        }else{
+                            Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
+                            if(ctrl.addEstudiante(es) == 1){
+                                success.setMsg("Estudiante Arregado!");
+                                response.getWriter().write(gson.toJson(success));
+                            }else{
+                                error.setMsg("ERROR: Estudiante NO Agregado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }                        
                     }
                     break;
                     case "EditarEstudiante": {
+                        System.out.println("Editando Estudiante...");
                         String cedula = request.getParameter("cedula");
                         String fechaNacString = request.getParameter("fechaNac");
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -403,18 +424,24 @@ public class AndroidServlet extends HttpServlet {
                         String email = request.getParameter("email");
                         String password = request.getParameter("password");
                         Usuario user = new Usuario(cedula,password,4);
-                        Carrera carrera = ctrl.getCarrera(idCarrera);
-                        Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
-                        if(ctrl.updateEstudiante(es) == 1){
-                            success.setMsg("Estudiante Actualizado!");
-                            response.getWriter().write(gson.toJson(success));
-                        }else{
-                            error.setMsg("ERROR: Estudiante NO Actualizado!");
+                        Carrera carrera;
+                        if((carrera = ctrl.getCarrera(idCarrera)) == null){
+                            error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
-                        }
+                        }else{
+                            Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
+                            if(ctrl.updateEstudiante(es) == 1){
+                                success.setMsg("Estudiante Actualizado!");
+                                response.getWriter().write(gson.toJson(success));
+                            }else{
+                                error.setMsg("ERROR: Estudiante NO Actualizado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }                        
                     }
                     break;
                     case "BuscarEstudiante": {
+                        System.out.println("Buscando Estudiantes...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String idCarrera = request.getParameter("idCarrera");
@@ -453,6 +480,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarMatriculador": {
+                        System.out.println("Agregando Matriculador...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -470,6 +498,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "BuscarMatriculador": {
+                        System.out.println("Buscando Matriculadores...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         if(cedula != "" && nombre == ""){
@@ -498,6 +527,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "EditarMatriculador":{
+                        System.out.println("Editando Matriculador...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -516,6 +546,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarAdministrador": {
+                        System.out.println("Agregando Administrador...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -533,6 +564,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "BuscarAdministrador": {
+                        System.out.println("Buscando Administradores...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         if(cedula != "" && nombre == ""){
@@ -561,6 +593,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "EditarAdministrador":{
+                        System.out.println("Editando Administrador...");
                         String cedula = request.getParameter("cedula");
                         String nombre = request.getParameter("nombre");
                         String telefono = request.getParameter("telefono");
@@ -579,6 +612,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "AgregarCurso": {
+                        System.out.println("Agregando Curso...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         String creditos = request.getParameter("creditos");
@@ -604,6 +638,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "EditarCurso": {
+                        System.out.println("Editando Curso...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         String creditos = request.getParameter("creditos");
@@ -629,6 +664,7 @@ public class AndroidServlet extends HttpServlet {
                     }
                     break;
                     case "BuscarCurso": {
+                        System.out.println("Buscando Cursos...");
                         String codigo = request.getParameter("codigo");
                         String nombre = request.getParameter("nombre");
                         String idCarrera = request.getParameter("idCarrera");
@@ -666,37 +702,42 @@ public class AndroidServlet extends HttpServlet {
                         }
                     }
                     break;
-//                    case "AgregarGrupo": {
-//                        String idCurso = request.getParameter("idCurso");
-//                        String numeroCiclo = request.getParameter("numeroCiclo");
-//                        String numero = request.getParameter("numero");
-//                        String[] dias = request.getParameterValues("dias");
-//                        String horaInicio = request.getParameter("horaInicio");
-//                        String horaFinal = request.getParameter("horaFinal");
-//                        String idProfesor = request.getParameter("idProfesor");
-//                        String anioCiclo = request.getParameter("anioCiclo");
-//                        String diasStr = "";
-//                        for(String s : dias){
-//                            diasStr = diasStr +" "+ s;
-//                        }
-//                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
-//                        Profesor profe = ctrl.getProfesor(idProfesor);
-//                        Curso cur = ctrl.getCurso(idCurso);
-//                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
-//                        Grupo gru = new Grupo(Integer.parseInt(numero),hora,profe,cur,ci);
-////                        this.printHTML(gru.toString(), response);
-//                        if(ctrl.addGrupo(gru) == 1){
-//                            grupos = ctrl.gruposPorCurso(cur);
-//                            session.setAttribute("grupos", grupos);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }else{
-//                            String errores = "ERROR: Grupo NO Agregado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }
-//                    }
-//                    break;
+                    case "AgregarGrupo": {
+                        String idCurso = request.getParameter("idCurso");
+                        String numeroCiclo = request.getParameter("numeroCiclo");
+                        String numero = request.getParameter("numero");
+                        String[] dias = request.getParameterValues("dias");
+                        String horaInicio = request.getParameter("horaInicio");
+                        String horaFinal = request.getParameter("horaFinal");
+                        String idProfesor = request.getParameter("idProfesor");
+                        String anioCiclo = request.getParameter("anioCiclo");
+                        String diasStr = "";
+                        for(String s : dias){
+                            diasStr = diasStr +" "+ s;
+                        }
+                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
+                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
+                        Profesor profe = ctrl.getProfesor(idProfesor);
+                        Curso cur = ctrl.getCurso(idCurso);
+                        if(profe == null){
+                            error.setMsg("ERROR: Cedula del Profesor Incorrecta!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else if(cur == null){
+                            error.setMsg("ERROR: Código de Curso Incorrecto!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            System.out.println("Agregando Grupo a " + cur.getNombre() + "...");
+                            Grupo gru = new Grupo(Integer.parseInt(numero),hora,profe,cur,ci);
+                            if(ctrl.addGrupo(gru) == 1){
+                                success.setMsg("Grupo Agregado!");
+                                response.getWriter().write(gson.toJson(success));
+                            }else{
+                                error.setMsg("ERROR: Grupo NO Agregado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }
+                    }
+                    break;
 //                    case "EditarGrupo": {
 //                        String idGrupo= request.getParameter("idGrupo");
 //                        String idCurso = request.getParameter("idCurso");
