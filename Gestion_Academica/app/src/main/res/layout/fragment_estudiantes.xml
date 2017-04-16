@@ -1,27 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvEstudiantes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp" />
-
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textListaP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:text="Lista de Estudiantes"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="24sp"
-        android:layout_alignParentTop="true"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/floatingBuscarEstudiante"
         android:layout_alignParentStart="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingAgregarEstudiante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingBuscarEstudiante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listEstudiante"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.gestion_academica.Main_Fragments.estudiantesFragment"
+        tools:listitem="@layout/fila_estudiante"
+        android:layout_below="@+id/textListaP" />
 
 
 </RelativeLayout>

@@ -16,34 +16,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/cedulaText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="99dp"
-                android:text="Cedula"
-                android:textSize="18sp"
-                android:layout_marginStart="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:id="@+id/cedulaEstudiante"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cedula"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textSize="18sp"
-                android:layout_alignTop="@+id/cedulaText"
-                android:layout_centerHorizontal="true" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cedulaText"
+                android:layout_marginTop="70dp"
+                android:id="@+id/cedulaWidgetEst"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imageView7"
+                android:layout_marginStart="21dp">
+
+                <EditText
+                    android:id="@+id/cedulaEstudiante"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Cedula"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:maxLength="20"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cedulaWidgetEst"
                 android:layout_marginTop="20dp"
                 android:id="@+id/nombrewidgetEstudiante"
-                android:layout_alignStart="@+id/cedulaText">
+                android:layout_alignStart="@+id/cedulaWidgetEst">
 
                 <EditText
                     android:id="@+id/nombreEstudiante"
@@ -64,7 +65,7 @@
                 android:layout_below="@+id/nombrewidgetEstudiante"
                 android:layout_marginTop="20dp"
                 android:id="@+id/telefonoWidgetPro"
-                android:layout_alignStart="@+id/cedulaText">
+                android:layout_alignStart="@+id/cedulaWidgetEst">
 
                 <EditText
                     android:id="@+id/telefonoEstudiante"
@@ -83,7 +84,7 @@
                 android:layout_below="@+id/telefonoWidgetPro"
                 android:layout_marginTop="20dp"
                 android:id="@+id/emailWidgetPro"
-                android:layout_alignStart="@+id/cedulaText">
+                android:layout_alignStart="@+id/cedulaWidgetEst">
 
                 <EditText
                     android:id="@+id/emailEstudiante"
@@ -104,57 +105,53 @@
                 android:hint="Fecha Nacimiento: "
                 android:layout_marginTop="25dp"
                 android:layout_below="@+id/emailWidgetPro"
-                android:layout_alignStart="@+id/cedulaText"
+                android:layout_alignStart="@+id/cedulaWidgetEst"
                 android:textSize="18sp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/widgetFechaNac"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/cedulaText"
+                android:layout_alignStart="@+id/cedulaWidgetEst"
                 android:layout_below="@+id/emailWidgetPro"
                 android:layout_marginLeft="150dp"
                 android:layout_marginTop="25dp">
 
                 <TextView
-                    android:id="@+id/fechaNacEstudiante"
+                    android:id="@+id/fechaNac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12/03/16"
+                    android:text="Elegir"
                     android:textSize="18sp"
                     android:maxLines="1"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/carreraText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
+                android:hint="Carrera: "
+                android:layout_marginTop="25dp"
                 android:layout_below="@+id/fechaNacText"
-                android:id="@+id/carreraWidgetPro">
+                android:layout_alignStart="@+id/cedulaWidgetEst"
+                android:textSize="18sp"/>
 
-                <EditText
-                    android:id="@+id/carreraEstudiante"
-                    android:layout_width="266dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Carrera"
-                    android:inputType="textVisiblePassword"
-                    android:maxLength="25"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
+            <Spinner
+                android:id="@+id/spinnerEstudiante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="25dp"
+                android:layout_below="@+id/fechaNacText"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/carreraWidgetPro"
+                android:layout_below="@+id/carreraText"
                 android:layout_marginTop="20dp"
                 android:id="@+id/contrasenaWidgetPro"
-                android:layout_alignStart="@+id/cedulaText">
+                android:layout_alignStart="@+id/cedulaWidgetEst">
 
                 <EditText
                     android:id="@+id/contrasenaEstudiante"
