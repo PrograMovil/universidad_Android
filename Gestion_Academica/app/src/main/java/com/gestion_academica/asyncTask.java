@@ -35,7 +35,7 @@ public class asyncTask extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
 
         try {
-            if (!result.equals("null")){
+            if (!result.equals("null") || result!=null){
                 JSONObject data = new JSONObject(result);
                 String dataResult = data.getString("type");
                 String msg = data.getString("msg");
