@@ -43,6 +43,14 @@ public class AccesoDatos {
         return rs;        
     }
     
+    public ResultSet obtenerId(String tableName, String param){
+        db = new Database();
+        String sql = "select id from " + tableName + " where " + param;
+        ResultSet rs = db.executeQuery(sql);
+        db.desconectar();
+        return rs;        
+    }
+    
     public ResultSet obtenerTodo(String tableName){
         db = new Database();
         String sql = "select * from " + tableName;

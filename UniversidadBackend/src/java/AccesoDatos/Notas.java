@@ -19,28 +19,10 @@ public class Notas  extends AccesoDatos {
     }
     
     public int eliminar(Nota c) throws SQLException{
-        String tableName = "Nota";
-        
-        //**********************************************************************
-        //obtener id del curso manualmente:
-        String param = "codigo = '%s'";
-        param = String.format(param, c.getCurso().getCodigo());
-        String sql = "select * from Curso o where o." + param;
-        ResultSet rs = db.executeQuery(sql);
-        int idCurso=rs.getInt("id");
-        //fin de obtener id de curso desde BD
-        
-        //obtener id de nota manualmente:
-        String param2 = "calificacion = '%s', Estudiante_cedula = '%s', Curso_id = '%s'";
-        param2 = String.format(param2, c.getCalificacion(),c.getEstudiante().getCedula(),idCurso);
-        String sql2 = "select * from Nota o where o." + param2;
-        ResultSet rs2 = db.executeQuery(sql2);
-        int idNota=rs2.getInt("id");
-        //fin de obtener id de nota desde BD
-        //**********************************************************************
-        
-        String query = "id="+idNota;
-        return super.eliminar(tableName, query);
+        String tablename = "Nota";
+        String query = "id='%s'";
+        query = String.format(query, obtenerId(c));
+        return super.eliminar(tablename, query);
     }
     
     public int actualizar(Nota c) throws SQLException{
@@ -51,7 +33,7 @@ public class Notas  extends AccesoDatos {
         return super.actualizar(tableName, tableParams);
     }
     
-    private Nota toCiclo(ResultSet rs) throws Exception {
+    private Nota toNota(ResultSet rs) throws Exception {
         Nota obj = new Nota();
         
         obj.setCalificacion(rs.getFloat("calificacion"));
@@ -77,11 +59,11 @@ public class Notas  extends AccesoDatos {
     
     public int obtenerId(Nota c) throws SQLException{
         //obtener id de Curso manualmente:
+        String tablename="Nota";
         String param2 = "calificacion = '%s', Estudiante_cedula = '%s', Curso_id = '%s'";
         param2 = String.format(param2, c.getCalificacion(),c.getEstudiante().getCedula(),new Cursos().obtenerId(c.getCurso()));
-        String sql2 = "select * from Nota where " + param2;
-        ResultSet rs2 = db.executeQuery(sql2);
-        int idNota=-1;
+        ResultSet rs2 = super.obtenerId(tablename, param2);
+        int idNota=0;
         if(rs2.next())
             idNota=rs2.getInt("id");
         //fin de obtener id de Curso desde BD

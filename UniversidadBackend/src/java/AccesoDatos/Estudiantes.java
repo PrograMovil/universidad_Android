@@ -32,10 +32,10 @@ public class Estudiantes extends AccesoDatos{
     
     public int actualizar(Estudiante c) throws SQLException{
         String tableName = "Estudiante";
-        String tableParams = "nombre='%s', telefono='%s', email='%s', fechaNac='%s' where cedula='%s'";
+        String tableParams = "nombre='%s', telefono='%s', email='%s', fechaNac='%s', Carrera_id='%s' where cedula='%s'";
         java.sql.Date fechaNa = new java.sql.Date(c.getFechaNac().getTimeInMillis());
-        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,c.getCedula());
-        new Carreras().actualizar(c.getCarrera());
+        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,new Carreras().obtenerId(c.getCarrera()),c.getCedula());
+        
         new Usuarios().actualizar(c.getUsuario());
         return super.actualizar(tableName, tableParams);
     }

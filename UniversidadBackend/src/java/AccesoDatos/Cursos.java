@@ -73,11 +73,11 @@ public class Cursos extends AccesoDatos {
     public int obtenerId(Curso c) throws SQLException{
         
         //obtener id de Curso manualmente:
+        String tablename="Curso";
         String param2 = "codigo = '%s'";
         param2 = String.format(param2, c.getCodigo());
-        String sql2 = "select * from Curso o where o." + param2;
-        ResultSet rs2 = db.executeQuery(sql2);
-        int idCurso=-1;
+        ResultSet rs2 = super.obtenerId(tablename, param2);
+        int idCurso=0;
         if(rs2.next())
             idCurso=rs2.getInt("id");
         //fin de obtener id de Curso desde BD

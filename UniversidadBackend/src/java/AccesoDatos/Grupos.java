@@ -86,20 +86,19 @@ public class Grupos extends AccesoDatos {
     }
     
     
-//    public int obtenerId(Grupo c) throws SQLException{
-//        
-//        //obtener id de Grupo manualmente:
-//        String param2 = "numero = '%s' and Horario_id = '%s' and Curso_id = '%s' and Profesor_cedula = '%s' and Ciclo_anio='%s' and Ciclo_numero='%s'";
-//        param2 = String.format(param2, c.getNumero(), new Horarios().obtenerId(c.getHorario()), new Cursos().obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
-//        String sql2 = "select * from Grupo where " + param2;
-//        ResultSet rs2 = db.executeQuery(sql2);
-//        int id=-1;
-//        if (rs2.next()) {
-//            id=rs2.getInt("id");
-//        }
-//        //fin de obtener id de Gupo desde BD
-//        return id;
-//    }
+    public int obtenerId(Grupo c) throws SQLException{
+        
+        String tablename="Grupo";
+        String param2 = "numero = '%s' and Horario_id = '%s' and Curso_id = '%s' and Profesor_cedula = '%s' and Ciclo_anio='%s' and Ciclo_numero='%s'";
+        param2 = String.format(param2, c.getNumero(), new Horarios().obtenerId(c.getHorario()), new Cursos().obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
+        ResultSet rs2 = super.obtenerId(tablename, param2);
+        int id=0;
+        if (rs2.next()) {
+            id=rs2.getInt("id");
+        }
+        //fin de obtener id de Gupo desde BD
+        return id;
+    }
     
     
     public ArrayList<Grupo> gruposPorProfesor(String cedula) throws Exception{

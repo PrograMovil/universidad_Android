@@ -64,13 +64,12 @@ public class Horarios extends AccesoDatos {
     }
 
     public int obtenerId(Horario h) throws SQLException {
-        //obtener id de horario manualmente:
+        
+        String tablename="Horario";
         String param2 = "dias = '%s' AND horaInicial = '%s' AND HoraFinal = '%s'";
-
         param2 = String.format(param2, h.getDias(), h.getHoraInicial(), h.getHoraFinal());
-        String sql2 = "select * from Horario where " + param2;
-        ResultSet rs2 = db.executeQuery(sql2);
-        int idHorario = -1;
+        ResultSet rs2 = super.obtenerId(tablename, param2);
+        int idHorario = 0;
         if (rs2.next()) {
             idHorario = rs2.getInt("id");
         }
