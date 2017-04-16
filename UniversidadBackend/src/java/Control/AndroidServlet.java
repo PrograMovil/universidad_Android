@@ -89,6 +89,7 @@ public class AndroidServlet extends HttpServlet {
         ArrayList<Administrador> administradores = new ArrayList<Administrador>();
         ArrayList<Curso> cursos = new ArrayList<Curso>();
         ArrayList<Grupo> grupos = new ArrayList<Grupo>();
+        ArrayList<Ciclo> ciclos = new ArrayList<Ciclo>();
         
 //        ArrayList<Carrera> allCarreras = null;
 //        
@@ -254,6 +255,29 @@ public class AndroidServlet extends HttpServlet {
                                 response.getWriter().write(gruposJSON);
                             }
                         }                        
+                    }
+                    break;
+                    case "AllCiclos": {
+                        ciclos.clear();
+                        ciclos = ctrl.obtenerTodosLosCiclos();
+                        if(ciclos.size() == 0){
+                            error.setMsg("Aun no existen ciclos Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String ciclosJSON  = gson.toJson(ciclos);
+                            response.getWriter().write(ciclosJSON);
+                        }
+                    }
+                    break;
+                    case "CicloActivo": {
+                        Ciclo ciclo;
+                        if((ciclo = ctrl.obtenerCicloActivo()) == null){
+                            error.setMsg("ERROR: No se pudo recuperar el Ciclo Activo!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String cicloJSON  = gson.toJson(ciclo);
+                            response.getWriter().write(cicloJSON);
+                        }
                     }
                     break;
                     case "AgregarCarrera": {
@@ -779,6 +803,18 @@ public class AndroidServlet extends HttpServlet {
                         }                        
                     }
                     break;
+                    case "CicloDefault": {
+                        String anio= request.getParameter("anio");
+                        String numero= request.getParameter("numero");
+                        if((ctrl.cambiarCicloActivo(Integer.parseInt(anio), numero)) == 1){
+                            success.setMsg("Ciclo Cambiado Correctamente!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Ciclo NO se pudo Cambiar!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
 //                    case "Matricular": {
 //                        cicloDefault = ctrl.obtenerCicloActivo();
 //                        System.out.println(cicloDefault);
@@ -789,21 +825,6 @@ public class AndroidServlet extends HttpServlet {
 ////                            
 ////                        }
 //                        this.printHTML("Matriculado "+idEstudiante+" en: "+idGrupo, response);
-//                    }
-//                    break;
-//                    case "CicloDefault": {
-//                        String anio= request.getParameter("anio");
-//                        String numero= request.getParameter("numero");
-//                        this.printHTML("Matriculado "+anio+" en: "+numero, response);
-//                        if((ctrl.cambiarCicloActivo(Integer.parseInt(anio), numero)) == 1){
-//                            session.setAttribute("errores", "");
-//                            session.setAttribute("exito", "Ciclo Cambiado Correctamente");
-//                            response.sendRedirect("adminCiclos.jsp");
-//                        }else{
-//                            session.setAttribute("errores", "");
-//                            session.setAttribute("exito", "");
-//                            response.sendRedirect("adminCiclos.jsp");
-//                        }
 //                    }
 //                    break;
                 }
