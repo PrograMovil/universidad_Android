@@ -246,7 +246,7 @@ public class AndroidServlet extends HttpServlet {
                             System.out.println(curso.toString());
                             System.out.println("Mostrando todos los Grupos de " + curso.getNombre() + "...");
                             grupos = ctrl.gruposPorCurso(curso);    
-                            if(cursos.size() == 0){
+                            if(grupos.size() == 0){
                                 error.setMsg("Aun no existen Grupos Registrados!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
@@ -743,37 +743,42 @@ public class AndroidServlet extends HttpServlet {
                         }
                     }
                     break;
-//                    case "EditarGrupo": {
-//                        String idGrupo= request.getParameter("idGrupo");
-//                        String idCurso = request.getParameter("idCurso");
-//                        String numeroCiclo = request.getParameter("numeroCiclo");
-//                        String numero = request.getParameter("numero");
-//                        String[] dias = request.getParameterValues("dias");
-//                        String horaInicio = request.getParameter("horaInicio");
-//                        String horaFinal = request.getParameter("horaFinal");
-//                        String idProfesor = request.getParameter("idProfesor");
-//                        String anioCiclo = request.getParameter("anioCiclo");
-//                        String diasStr = "";
-//                        for(String s : dias){
-//                            diasStr = diasStr +" "+ s;
-//                        }
-//                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
-//                        Profesor profe = ctrl.getProfesor(idProfesor);
-//                        Curso cur = ctrl.getCurso(idCurso);
-//                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
-//                        Grupo gru = new Grupo(Integer.parseInt(idGrupo),Integer.parseInt(numero),hora,profe,cur,ci);
-//                        if(ctrl.updateGrupo(gru) == 1){
-//                            grupos = ctrl.gruposPorCurso(cur);
-//                            session.setAttribute("grupos", grupos);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }else{
-//                            String errores = "ERROR: Grupo NO Actualizado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }
-//                    }
-//                    break;
+                    case "EditarGrupo": {
+                        String idGrupo= request.getParameter("idGrupo");
+                        String idCurso = request.getParameter("idCurso");
+                        String numeroCiclo = request.getParameter("numeroCiclo");
+                        String numero = request.getParameter("numero");
+                        String[] dias = request.getParameterValues("dias");
+                        String horaInicio = request.getParameter("horaInicio");
+                        String horaFinal = request.getParameter("horaFinal");
+                        String idProfesor = request.getParameter("idProfesor");
+                        String anioCiclo = request.getParameter("anioCiclo");
+                        String diasStr = "";
+                        for(String s : dias){
+                            diasStr = diasStr +" "+ s;
+                        }
+                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
+                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
+                        Profesor profe;
+                        Curso cur;
+                        if((profe = ctrl.getProfesor(idProfesor)) == null){
+                            error.setMsg("ERROR: Cedula del Profesor Incorrecta!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else if((cur = ctrl.getCurso(idCurso)) == null){
+                            error.setMsg("ERROR: Código de Curso Incorrecto!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            Grupo gru = new Grupo(Integer.parseInt(idGrupo),Integer.parseInt(numero),hora,profe,cur,ci);
+                            if(ctrl.updateGrupo(gru) == 1){
+                                success.setMsg("Grupo Actualizado!");
+                                response.getWriter().write(gson.toJson(success));                                   
+                            }else{
+                                error.setMsg("ERROR: Grupo NO Actualizado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }                        
+                    }
+                    break;
 //                    case "Matricular": {
 //                        cicloDefault = ctrl.obtenerCicloActivo();
 //                        System.out.println(cicloDefault);
