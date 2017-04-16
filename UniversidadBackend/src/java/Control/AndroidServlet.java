@@ -402,9 +402,11 @@ public class AndroidServlet extends HttpServlet {
                         }else{
                             Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
                             if(ctrl.addEstudiante(es) == 1){
+                                System.out.println("Estudiante Arregado!");
                                 success.setMsg("Estudiante Arregado!");
                                 response.getWriter().write(gson.toJson(success));
                             }else{
+                                System.out.println("ERROR: Estudiante NO Agregado!");
                                 error.setMsg("ERROR: Estudiante NO Agregado!");
                                 response.getWriter().write(gson.toJson(error));
                             }
@@ -426,14 +428,17 @@ public class AndroidServlet extends HttpServlet {
                         Usuario user = new Usuario(cedula,password,4);
                         Carrera carrera;
                         if((carrera = ctrl.getCarrera(idCarrera)) == null){
+                            System.out.println("ERROR: Código de Carrera Incorrecto!");
                             error.setMsg("ERROR: Código de Carrera Incorrecto!");
                             response.getWriter().write(gson.toJson(error));
                         }else{
                             Estudiante es = new Estudiante(cal,carrera,user,nombre,cedula,telefono,email);
                             if(ctrl.updateEstudiante(es) == 1){
+                                System.out.println("Estudiante Actualizado!");
                                 success.setMsg("Estudiante Actualizado!");
                                 response.getWriter().write(gson.toJson(success));
                             }else{
+                                System.out.println("ERROR: Estudiante NO Actualizado!");
                                 error.setMsg("ERROR: Estudiante NO Actualizado!");
                                 response.getWriter().write(gson.toJson(error));
                             }
