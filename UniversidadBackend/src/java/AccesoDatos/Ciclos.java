@@ -104,8 +104,8 @@ public class Ciclos extends AccesoDatos {
         String tableParams = "anio='%s', numero='%s'";
         
         tableParams = String.format(tableParams, anio, numero);
-        String sql = "update " + tableName + " set " + tableParams + " where id='1'";
-        int count = db.executeUpdate(sql);
+        String sql = tableParams + " where id='1'";
+        int count =  super.actualizar(tableName, sql);
         return count;
         
     }
@@ -113,8 +113,7 @@ public class Ciclos extends AccesoDatos {
     public Ciclo obtenerCicloActivo() throws Exception{
         
         String tableName = "CicloActivo";
-        String sql = "select * from " + tableName ;
-        ResultSet rs = db.executeQuery(sql);
+        ResultSet rs = super.obtenerTodo(tableName);
         if (rs.next()) {
             Ciclo obj = obtenerPorAnioYNumero(rs.getInt("anio"), rs.getString("numero"));
             return obj;

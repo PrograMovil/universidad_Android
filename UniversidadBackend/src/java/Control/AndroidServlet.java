@@ -89,6 +89,7 @@ public class AndroidServlet extends HttpServlet {
         ArrayList<Administrador> administradores = new ArrayList<Administrador>();
         ArrayList<Curso> cursos = new ArrayList<Curso>();
         ArrayList<Grupo> grupos = new ArrayList<Grupo>();
+        ArrayList<Ciclo> ciclos = new ArrayList<Ciclo>();
         
 //        ArrayList<Carrera> allCarreras = null;
 //        
@@ -246,7 +247,7 @@ public class AndroidServlet extends HttpServlet {
                             System.out.println(curso.toString());
                             System.out.println("Mostrando todos los Grupos de " + curso.getNombre() + "...");
                             grupos = ctrl.gruposPorCurso(curso);    
-                            if(cursos.size() == 0){
+                            if(grupos.size() == 0){
                                 error.setMsg("Aun no existen Grupos Registrados!");
                                 response.getWriter().write(gson.toJson(error));
                             }else{
@@ -254,6 +255,29 @@ public class AndroidServlet extends HttpServlet {
                                 response.getWriter().write(gruposJSON);
                             }
                         }                        
+                    }
+                    break;
+                    case "AllCiclos": {
+                        ciclos.clear();
+                        ciclos = ctrl.obtenerTodosLosCiclos();
+                        if(ciclos.size() == 0){
+                            error.setMsg("Aun no existen ciclos Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String ciclosJSON  = gson.toJson(ciclos);
+                            response.getWriter().write(ciclosJSON);
+                        }
+                    }
+                    break;
+                    case "CicloActivo": {
+                        Ciclo ciclo;
+                        if((ciclo = ctrl.obtenerCicloActivo()) == null){
+                            error.setMsg("ERROR: No se pudo recuperar el Ciclo Activo!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String cicloJSON  = gson.toJson(ciclo);
+                            response.getWriter().write(cicloJSON);
+                        }
                     }
                     break;
                     case "AgregarCarrera": {
@@ -743,37 +767,54 @@ public class AndroidServlet extends HttpServlet {
                         }
                     }
                     break;
-//                    case "EditarGrupo": {
-//                        String idGrupo= request.getParameter("idGrupo");
-//                        String idCurso = request.getParameter("idCurso");
-//                        String numeroCiclo = request.getParameter("numeroCiclo");
-//                        String numero = request.getParameter("numero");
-//                        String[] dias = request.getParameterValues("dias");
-//                        String horaInicio = request.getParameter("horaInicio");
-//                        String horaFinal = request.getParameter("horaFinal");
-//                        String idProfesor = request.getParameter("idProfesor");
-//                        String anioCiclo = request.getParameter("anioCiclo");
-//                        String diasStr = "";
-//                        for(String s : dias){
-//                            diasStr = diasStr +" "+ s;
-//                        }
-//                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
-//                        Profesor profe = ctrl.getProfesor(idProfesor);
-//                        Curso cur = ctrl.getCurso(idCurso);
-//                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
-//                        Grupo gru = new Grupo(Integer.parseInt(idGrupo),Integer.parseInt(numero),hora,profe,cur,ci);
-//                        if(ctrl.updateGrupo(gru) == 1){
-//                            grupos = ctrl.gruposPorCurso(cur);
-//                            session.setAttribute("grupos", grupos);
-//                            session.setAttribute("errores", "");
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }else{
-//                            String errores = "ERROR: Grupo NO Actualizado!";
-//                            session.setAttribute("errores", errores);
-//                            response.sendRedirect("adminGrupos.jsp");
-//                        }
-//                    }
-//                    break;
+                    case "EditarGrupo": {
+                        String idGrupo= request.getParameter("idGrupo");
+                        String idCurso = request.getParameter("idCurso");
+                        String numeroCiclo = request.getParameter("numeroCiclo");
+                        String numero = request.getParameter("numero");
+                        String[] dias = request.getParameterValues("dias");
+                        String horaInicio = request.getParameter("horaInicio");
+                        String horaFinal = request.getParameter("horaFinal");
+                        String idProfesor = request.getParameter("idProfesor");
+                        String anioCiclo = request.getParameter("anioCiclo");
+                        String diasStr = "";
+                        for(String s : dias){
+                            diasStr = diasStr +" "+ s;
+                        }
+                        Horario hora = new Horario(diasStr,horaInicio,horaFinal);
+                        Ciclo ci = new Ciclo(Integer.parseInt(anioCiclo),numeroCiclo);
+                        Profesor profe;
+                        Curso cur;
+                        if((profe = ctrl.getProfesor(idProfesor)) == null){
+                            error.setMsg("ERROR: Cedula del Profesor Incorrecta!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else if((cur = ctrl.getCurso(idCurso)) == null){
+                            error.setMsg("ERROR: Código de Curso Incorrecto!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            Grupo gru = new Grupo(Integer.parseInt(idGrupo),Integer.parseInt(numero),hora,profe,cur,ci);
+                            if(ctrl.updateGrupo(gru) == 1){
+                                success.setMsg("Grupo Actualizado!");
+                                response.getWriter().write(gson.toJson(success));                                   
+                            }else{
+                                error.setMsg("ERROR: Grupo NO Actualizado!");
+                                response.getWriter().write(gson.toJson(error));
+                            }
+                        }                        
+                    }
+                    break;
+                    case "CicloDefault": {
+                        String anio= request.getParameter("anio");
+                        String numero= request.getParameter("numero");
+                        if((ctrl.cambiarCicloActivo(Integer.parseInt(anio), numero)) == 1){
+                            success.setMsg("Ciclo Cambiado Correctamente!");
+                            response.getWriter().write(gson.toJson(success));
+                        }else{
+                            error.setMsg("ERROR: Ciclo NO se pudo Cambiar!");
+                            response.getWriter().write(gson.toJson(error));
+                        }
+                    }
+                    break;
 //                    case "Matricular": {
 //                        cicloDefault = ctrl.obtenerCicloActivo();
 //                        System.out.println(cicloDefault);
@@ -784,21 +825,6 @@ public class AndroidServlet extends HttpServlet {
 ////                            
 ////                        }
 //                        this.printHTML("Matriculado "+idEstudiante+" en: "+idGrupo, response);
-//                    }
-//                    break;
-//                    case "CicloDefault": {
-//                        String anio= request.getParameter("anio");
-//                        String numero= request.getParameter("numero");
-//                        this.printHTML("Matriculado "+anio+" en: "+numero, response);
-//                        if((ctrl.cambiarCicloActivo(Integer.parseInt(anio), numero)) == 1){
-//                            session.setAttribute("errores", "");
-//                            session.setAttribute("exito", "Ciclo Cambiado Correctamente");
-//                            response.sendRedirect("adminCiclos.jsp");
-//                        }else{
-//                            session.setAttribute("errores", "");
-//                            session.setAttribute("exito", "");
-//                            response.sendRedirect("adminCiclos.jsp");
-//                        }
 //                    }
 //                    break;
                 }
