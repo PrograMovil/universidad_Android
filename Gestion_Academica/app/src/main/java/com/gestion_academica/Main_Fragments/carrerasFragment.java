@@ -195,7 +195,7 @@ public class carrerasFragment extends Fragment {
             JSONArray dataArray = null;
             ArrayList<Carrera> carreras = new ArrayList<Carrera>();
             try {
-                if (!result.equals("null")){
+                if (result!=null){
                         carreras.clear();
                         dataArray = new JSONArray(result);
                         Carrera car;

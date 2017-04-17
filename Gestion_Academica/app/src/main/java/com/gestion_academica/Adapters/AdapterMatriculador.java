@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,7 @@ public class AdapterMatriculador extends RecyclerView.Adapter<AdapterMatriculado
         // Get the data model based on position
         Matriculador matriculador = null;
         matriculador = (Matriculador) mMatriculadores.get(position);
+        Log.e("TagConexion", "creando las variables de la lista");
 
         final int p=position;
         // Set item views based on your views and data model

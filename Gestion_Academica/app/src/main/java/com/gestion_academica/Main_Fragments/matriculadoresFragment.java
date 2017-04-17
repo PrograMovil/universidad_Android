@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,11 @@ public class matriculadoresFragment extends Fragment {
 
 
     public matriculadoresFragment(){
-
+        Log.e("TagConexion", "Contructor matriculador fragment");
     }
 
     public static matriculadoresFragment newInstance(String cedula, String nombre) {
+        Log.e("TagConexion", "Contructor instancia matriculador fragment");
         matriculadoresFragment fragment = new matriculadoresFragment();
         if(cedula!=null)
             fragment.setmCedula(cedula);
@@ -177,6 +179,7 @@ public class matriculadoresFragment extends Fragment {
         }
         else urlRequest = urlBase + "action=BuscarMatriculador&cedula=&nombre="+mNombre;
 
+        Log.e("TagConexion", "llamando al async task");
         new matriculadoresFragment.MatriculadorTask(view.getContext(),recyclerV).execute();
     }
 
@@ -187,6 +190,7 @@ public class matriculadoresFragment extends Fragment {
         Context mContex;
         public MatriculadorTask(Context contex, RecyclerView rview)
         {
+            Log.e("TagConexion", "constructor Asign task matriculador");
             this.mRecyclerV=rview;
             this.mContex=contex;
         }
@@ -194,14 +198,15 @@ public class matriculadoresFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-
+            Log.e("TagConexion", "result Matriculador recibido");
             JSONArray dataArray = null;
             ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
             try {
-                if (!result.equals("null")){
+                if (result!=null){
                     matriculadores.clear();
                     dataArray = new JSONArray(result);
                     Matriculador prof;
+                    Log.e("TagConexion", "en postExecute");
                     for(int i=0; i<dataArray.length(); i++){
 
                         Usuario user=new Usuario();
@@ -239,12 +244,13 @@ public class matriculadoresFragment extends Fragment {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.connect();
+                Log.e("TagConexion", "connect Matriculador");
 
                 BufferedReader bf = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String valueResult = bf.readLine();
 
                 result = valueResult;
-
+                Log.e("TagConexion", "devolviendo result matriculador");
                 return result;
 
             } catch (MalformedURLException e) {

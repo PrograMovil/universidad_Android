@@ -1,10 +1,12 @@
 package com.gestion_academica.Adapters;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gestion_academica.Fragments_Agregar.agregarEstudianteFragment;
 import com.gestion_academica.Fragments_Editar.editarEstudianteFragment;
 import com.gestion_academica.Inicio;
 import com.gestion_academica.R;
 import com.gestion_academica.Fragments_Editar.editarEstudianteFragment;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
 
 
     public AdapterEstudiante(Context context, ArrayList<Estudiante> estudiantees, ArrayList<Carrera> carreras) {
+        Log.e("TagConexionEstudiante", "Constructor Adapter lista estudiantes");
         mEstudiantes = estudiantees;
         mCarreras=carreras;
         mContext = context;
@@ -56,6 +61,7 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
         public TextView carrera;
         public TextView botonEditar;
         public TextView botonMatricular;
+        public FloatingActionButton botonAgregar;
         public TextView textoTel;
         public TextView textoEm;
         public TextView textoNa;
@@ -82,14 +88,13 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
             botonMatricular=(TextView) itemView.findViewById(R.id.botonMatricularEstudiante);
 
 
+
             botonEditar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition(); // gets item position
                     if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
                         Estudiante estudiante = mEstudiantes.get(position);
-
-
                         Fragment newFragment=new editarEstudianteFragment().newInstance(estudiante,mCarreras);
                         if(mContext instanceof Inicio){
 
@@ -101,7 +106,6 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
                     }
                 }
             });
-
         }
 
 
@@ -126,6 +130,7 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
     @Override
     public void onBindViewHolder(final AdapterEstudiante.ViewHolder viewHolder, int position) {
         // Get the data model based on position
+        Log.e("TagConexionEstudiante2", "Cargando estudiantes al viewholder desde el adapter");
         Estudiante estudiante = null;
         estudiante = (Estudiante) mEstudiantes.get(position);
 
@@ -142,8 +147,9 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
         TextView carrera = viewHolder.carrera;
         carrera.setText(estudiante.getCarrera().getNombre());
         TextView nacimiento = viewHolder.nacimiento;
-        java.util.Date fe=estudiante.getFechaNac().getTime();
-        nacimiento.setText(fe.getDay()+"/"+fe.getMonth()+"/"+(fe.getYear()+1900));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        nacimiento.setText(sdf.format(estudiante.getFechaNac().getTime()));
 
         final boolean isExpanded = position== mExpandedPosition;
         viewHolder.telefono.setVisibility(isExpanded?View.VISIBLE:View.GONE);
@@ -166,7 +172,7 @@ public class AdapterEstudiante extends RecyclerView.Adapter<AdapterEstudiante.Vi
                 notifyDataSetChanged();
             }
         });
-
+        Log.e("TagConexionEstudiante2", "****Carga view holder finalizada****");
     }
 
     @Override

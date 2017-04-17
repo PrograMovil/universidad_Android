@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,15 @@ public class estudiantesFragment extends Fragment{
     ArrayList<String> result = new ArrayList<>();
     String mCedula=null;
     String mNombre=null;
+    ArrayList<Carrera> mCarreras=new ArrayList<>();
 
 
     public estudiantesFragment(){
-
+        Log.e("TagConexionEstudiante", "Contructor estudiante fragment");
     }
 
     public static estudiantesFragment newInstance(String cedula, String nombre) {
+        Log.e("TagConexionEstudiante", "Contructor newInstance estudiante fragment");
         estudiantesFragment fragment = new estudiantesFragment();
         if(cedula!=null)
             fragment.setmCedula(cedula);
@@ -91,11 +94,10 @@ public class estudiantesFragment extends Fragment{
         FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarEstudiante);
         FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarEstudiante);
 
-
         botonAgregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newFragment=new agregarEstudianteFragment();
+                Fragment newFragment=new agregarEstudianteFragment().newInstance(mCarreras);
                 if(v.getContext() instanceof Inicio){
                     FragmentTransaction fragmentTransaction=((Inicio) v.getContext()).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.frament_container, newFragment).addToBackStack("listaEstudiantes").commit();
@@ -172,6 +174,7 @@ public class estudiantesFragment extends Fragment{
 
 
         if(mCedula==null && mNombre==null){
+            Log.e("TagConexionEstudiante", "Mostrar todos los estudiantes");
             urlRequest = urlBase + "action=AllEstudiantes";
         }
         else if(mCedula!=null && mNombre==null){
@@ -199,13 +202,13 @@ public class estudiantesFragment extends Fragment{
         protected void onPostExecute(List<String> result) {
 
             JSONArray dataArray = null;
-            ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
-            ArrayList<Carrera> carreras=new ArrayList<Carrera>();
+            JSONArray dataArray2 = null;
+            ArrayList<Estudiante> estudiantes=new ArrayList<>();
             try {
-                if (result!=null && !result.isEmpty()){
+                if (result.get(0)!=null && result.get(1)!=null){
                     estudiantes.clear();
-                    carreras.clear();
-
+                    mCarreras.clear();
+                    Log.e("TagConexionEstudiante", "Cargando Estudiantes a la nueva lista");
                     dataArray = new JSONArray(result.get(0));
                     Estudiante prof;
                     for(int i=0; i<dataArray.length(); i++){
@@ -241,16 +244,19 @@ public class estudiantesFragment extends Fragment{
                         estudiantes.add(prof);
                     }
 
-                    dataArray = new JSONArray(result.get(1));
-                    for(int i=0; i<dataArray.length(); i++){
+                    Log.e("TagConexionEstudiante", "Lista:Estudiante 1:"+ estudiantes.get(0).getNombre());
+                    Log.e("TagConexionEstudiante", "JSON:Estudiante 1:"+ dataArray.getJSONObject(0).getString("nombre"));
+                    dataArray2 = new JSONArray(result.get(1));
+                    for(int i=0; i<dataArray2.length(); i++){
                         Carrera carr=new Carrera();
-                        carr.setTitulo(dataArray.getJSONObject(i).getString("titulo"));
-                        carr.setCodigo(dataArray.getJSONObject(i).getString("codigo"));
-                        carr.setNombre(dataArray.getJSONObject(i).getString("nombre"));
-                        carreras.add(carr);
+                        carr.setTitulo(dataArray2.getJSONObject(i).getString("titulo"));
+                        carr.setCodigo(dataArray2.getJSONObject(i).getString("codigo"));
+                        carr.setNombre(dataArray2.getJSONObject(i).getString("nombre"));
+                        mCarreras.add(carr);
                     }
+                    Log.e("TagConexionEstudiante", "Lista de estudiantes y carreras lista");
 
-                    AdapterEstudiante adapter=new AdapterEstudiante(mContex, estudiantes, carreras);
+                    AdapterEstudiante adapter=new AdapterEstudiante(mContex, estudiantes, mCarreras);
                     mRecyclerV.setLayoutManager(new LinearLayoutManager(mContex));
                     mRecyclerV.setAdapter(adapter);
 
@@ -265,8 +271,11 @@ public class estudiantesFragment extends Fragment{
         @Override
         protected List<String> doInBackground(String... params)
         {
+
             try {
+                result=new ArrayList<>();
                 URL url = new URL(urlRequest);
+                Log.e("TagConexionEstudiante", "urlRequest:"+urlRequest);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.connect();
@@ -275,9 +284,10 @@ public class estudiantesFragment extends Fragment{
                 String valueResult = bf.readLine();
 
                 result.add(valueResult);
-
+                Log.e("TagConexionEstudiante", "Agregado el result 1:"+valueResult);
 
                 URL url2 = new URL(urlBase+"action=AllCarreras");
+                Log.e("TagConexionEstudiante", "urlRequest:"+url2);
                 HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
                 connection2.setRequestMethod("GET");
                 connection2.connect();
@@ -285,7 +295,7 @@ public class estudiantesFragment extends Fragment{
                 BufferedReader bf2 = new BufferedReader(new InputStreamReader(connection2.getInputStream()));
                 String valueResult2 = bf2.readLine();
                 result.add(valueResult2);
-
+                Log.e("TagConexionEstudiante", "Agregador el result 2");
                 return result;
 
             } catch (MalformedURLException e) {

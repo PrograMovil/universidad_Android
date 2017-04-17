@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +68,7 @@ public class editarEstudianteFragment extends Fragment {
         final EditText nombre = (EditText) view.findViewById(R.id.nombreEstudiante);
         final EditText telefono = (EditText) view.findViewById(R.id.telefonoEstudiante);
         final EditText email = (EditText) view.findViewById(R.id.emailEstudiante);
-        final EditText carrera = (EditText) view.findViewById(R.id.carreraEstudiante);
+        final TextView carrera = (TextView) view.findViewById(R.id.carreraEstudiante);
         fechaNa = (TextView) view.findViewById(R.id.fechaNacEstudiante);
         final EditText pass = (EditText) view.findViewById(R.id.contrasenaEstudiante);
         Button botonGuardar=(Button) view.findViewById(R.id.botonGuardarEstudiante);
@@ -75,10 +77,19 @@ public class editarEstudianteFragment extends Fragment {
         nombre.setText(estudiante.getNombre());
         telefono.setText(estudiante.getTelefono());
         email.setText(estudiante.getEmail());
-        carrera.setText(estudiante.getCarrera().getNombre());
-        java.util.Date fe=estudiante.getFechaNac().getTime();
-        fechaNa.setText(fe.getDay()+"/"+fe.getMonth()+"/"+(fe.getYear()+1900));
         pass.setText(estudiante.getUsuario().getClave());
+
+        SpannableString content = new SpannableString(estudiante.getCarrera().getNombre());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        carrera.setText(content);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SpannableString content2 = new SpannableString(sdf.format(estudiante.getFechaNac().getTime()));
+        content2.setSpan(new UnderlineSpan(), 0, content2.length(), 0);
+
+        fechaNa.setText(content2);
+
+
 
 
         fechaNa.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +115,10 @@ public class editarEstudianteFragment extends Fragment {
                         .setAdapter(spinner_carreras, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
-                                carrera.setText(mCarreras.get(which).getNombre());
                                 estudiante.setCarrera(mCarreras.get(which));
+                                SpannableString content = new SpannableString(mCarreras.get(which).getNombre());
+                                content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                                carrera.setText(content);
                                 dialog.dismiss();
                             }
                         }).create().show();
@@ -212,7 +225,7 @@ public class editarEstudianteFragment extends Fragment {
     private void updateLabel() {
 
         String myFormat = "dd/MM/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
 
         fechaNa.setText(sdf.format(myCalendar.getTime()));
         estudiante.setFechaNac(myCalendar);

@@ -43,6 +43,7 @@ public class asyncTask extends AsyncTask<String,Void,String> {
 
                 if (dataResult.equals("Success")){
                     Toast.makeText(mContex, msg, Toast.LENGTH_LONG).show();
+                    fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.frament_container)).commit();
                     fragmentManager.popBackStackImmediate();
                 } else {
                     Toast.makeText(mContex, msg, Toast.LENGTH_LONG).show();
