@@ -12,14 +12,15 @@ import java.util.GregorianCalendar;
 
 public class Estudiantes extends AccesoDatos{
 
-    public Estudiantes() {
+    public Estudiantes(Database db) {
+        super(db);
     }
     
     public int agregar(Estudiante c) throws Exception{
         String tableAndParams = "Estudiante(cedula,nombre,telefono,email,fechaNac,Usuario_id,Carrera_id)";
         String values = "'%s','%s','%s','%s','%s','%s','%s'";
         java.sql.Date fechaNa = new java.sql.Date(c.getFechaNac().getTimeInMillis());
-        values = String.format(values,c.getCedula(),c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,c.getUsuario().getId(),new Carreras().obtenerId(c.getCarrera()));
+        values = String.format(values,c.getCedula(),c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,c.getUsuario().getId(),new Carreras(db).obtenerId(c.getCarrera()));
         return super.agregar(tableAndParams, values);
     }
     
@@ -34,9 +35,9 @@ public class Estudiantes extends AccesoDatos{
         String tableName = "Estudiante";
         String tableParams = "nombre='%s', telefono='%s', email='%s', fechaNac='%s', Carrera_id='%s' where cedula='%s'";
         java.sql.Date fechaNa = new java.sql.Date(c.getFechaNac().getTimeInMillis());
-        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,new Carreras().obtenerId(c.getCarrera()),c.getCedula());
+        tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(),fechaNa,new Carreras(db).obtenerId(c.getCarrera()),c.getCedula());
         
-        new Usuarios().actualizar(c.getUsuario());
+        new Usuarios(db).actualizar(c.getUsuario());
         return super.actualizar(tableName, tableParams);
     }
     
@@ -49,9 +50,9 @@ public class Estudiantes extends AccesoDatos{
         Calendar fechaNa = new GregorianCalendar();
         fechaNa.setTime(rs.getDate("fechaNac"));
         obj.setFechaNac(fechaNa);
-        Carrera ca=new Carreras().obtenerPorId(rs.getInt("Carrera_id"));
+        Carrera ca=new Carreras(db).obtenerPorId(rs.getInt("Carrera_id"));
         obj.setCarrera(ca);
-        Usuario u=new Usuarios().obtener(rs.getString("Usuario_id"));
+        Usuario u=new Usuarios(db).obtener(rs.getString("Usuario_id"));
         obj.setUsuario(u);
         
         
@@ -94,7 +95,7 @@ public class Estudiantes extends AccesoDatos{
     public ArrayList<Estudiante> obtenerPorCarrera(Carrera carrera) throws Exception{
         String tableName = "Estudiante";
         String param = "Carrera_id = '%s'";
-        param = String.format(param, new Carreras().obtenerId(carrera));
+        param = String.format(param, new Carreras(db).obtenerId(carrera));
         ResultSet rs = super.obtener(tableName, param);
         ArrayList<Estudiante> lista=new ArrayList();
         while (rs.next()) {

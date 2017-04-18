@@ -8,13 +8,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Notas  extends AccesoDatos {
+
+    public Notas(Database db) {
+        super(db);
+    }
+    
+    
     
     public int agregar(Nota c) throws SQLException{
         String tableAndParams = "Nota(calificacion,Estudiante_cedula,Curso_id)";
         String values = "'%s','%s','%s'";
        
         
-        values = String.format(values,c.getCalificacion(),c.getEstudiante().getCedula(),new Cursos().obtenerId(c.getCurso()));
+        values = String.format(values,c.getCalificacion(),c.getEstudiante().getCedula(),new Cursos(db).obtenerId(c.getCurso()));
         return super.agregar(tableAndParams, values);
     }
     
@@ -29,7 +35,7 @@ public class Notas  extends AccesoDatos {
         String tableName = "Nota";
         String tableParams = "calificacion='%s', Estudiante_cedula = '%s', Curso_id = '%s' where id='%s'";
         
-        tableParams = String.format(tableParams, c.getCalificacion(), c.getEstudiante().getCedula(), new Cursos().obtenerId(c.getCurso()), obtenerId(c));
+        tableParams = String.format(tableParams, c.getCalificacion(), c.getEstudiante().getCedula(), new Cursos(db).obtenerId(c.getCurso()), obtenerId(c));
         return super.actualizar(tableName, tableParams);
     }
     
@@ -37,8 +43,8 @@ public class Notas  extends AccesoDatos {
         Nota obj = new Nota();
         
         obj.setCalificacion(rs.getFloat("calificacion"));
-        obj.setEstudiante(new Estudiantes().obtener(rs.getString("Estudiante_cedula")));
-        obj.setCurso(new Cursos().obtener(rs.getString("Curso_id")));
+        obj.setEstudiante(new Estudiantes(db).obtener(rs.getString("Estudiante_cedula")));
+        obj.setCurso(new Cursos(db).obtener(rs.getString("Curso_id")));
         return obj;
     }
     
@@ -61,7 +67,7 @@ public class Notas  extends AccesoDatos {
         //obtener id de Curso manualmente:
         String tablename="Nota";
         String param2 = "calificacion = '%s', Estudiante_cedula = '%s', Curso_id = '%s'";
-        param2 = String.format(param2, c.getCalificacion(),c.getEstudiante().getCedula(),new Cursos().obtenerId(c.getCurso()));
+        param2 = String.format(param2, c.getCalificacion(),c.getEstudiante().getCedula(),new Cursos(db).obtenerId(c.getCurso()));
         ResultSet rs2 = super.obtenerId(tablename, param2);
         int idNota=0;
         if(rs2.next())

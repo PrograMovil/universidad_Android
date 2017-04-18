@@ -35,6 +35,18 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "AndroidServlet", urlPatterns = {"/AndroidServlet"})
 public class AndroidServlet extends HttpServlet {
     
+    Control ctrl = new Control();
+    //        Listas de Objetos
+    ArrayList<Carrera> carreras = new ArrayList<Carrera>();
+    ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+    ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
+    ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
+    ArrayList<Administrador> administradores = new ArrayList<Administrador>();
+    ArrayList<Curso> cursos = new ArrayList<Curso>();
+    ArrayList<Grupo> grupos = new ArrayList<Grupo>();
+    ArrayList<Ciclo> ciclos = new ArrayList<Ciclo>();
+    ArrayList<Horario> horarios = new ArrayList<Horario>();
+    
     private class SuccessMsg {
         
         String type = "Success";
@@ -81,15 +93,7 @@ public class AndroidServlet extends HttpServlet {
 //        Define cual es la accion que se va a realizar
         String accion = request.getParameter("action");
                 
-//        Listas de Objetos
-        ArrayList<Carrera> carreras = new ArrayList<Carrera>();
-        ArrayList<Profesor> profesores = new ArrayList<Profesor>();
-        ArrayList<Estudiante> estudiantes = new ArrayList<Estudiante>();
-        ArrayList<Matriculador> matriculadores = new ArrayList<Matriculador>();
-        ArrayList<Administrador> administradores = new ArrayList<Administrador>();
-        ArrayList<Curso> cursos = new ArrayList<Curso>();
-        ArrayList<Grupo> grupos = new ArrayList<Grupo>();
-        ArrayList<Ciclo> ciclos = new ArrayList<Ciclo>();
+
         
 //        ArrayList<Carrera> allCarreras = null;
 //        
@@ -103,7 +107,7 @@ public class AndroidServlet extends HttpServlet {
 //        ArrayList<Grupo> gruposCurso = null;
 //        Ciclo cicloDefault = null;;
         
-        Control ctrl = new Control();
+        
         ErrorMsg error = new ErrorMsg("");
         SuccessMsg success = new SuccessMsg("");
         //        Acciones
@@ -266,6 +270,17 @@ public class AndroidServlet extends HttpServlet {
                         }else{
                             String ciclosJSON  = gson.toJson(ciclos);
                             response.getWriter().write(ciclosJSON);
+                        }
+                    }
+                    case "AllHorarios": {
+                        horarios.clear();
+                        horarios = ctrl.obtenerTodosLosHorarios();
+                        if(horarios.size() == 0){
+                            error.setMsg("Aun no existen horarios Registrados!");
+                            response.getWriter().write(gson.toJson(error));
+                        }else{
+                            String horariosJSON  = gson.toJson(horarios);
+                            response.getWriter().write(horariosJSON);
                         }
                     }
                     break;

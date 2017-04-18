@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.gestion_academica.Main_Fragments.administradoresFragment;
 import com.gestion_academica.Main_Fragments.carrerasFragment;
 import com.gestion_academica.Main_Fragments.estudiantesFragment;
+import com.gestion_academica.Main_Fragments.gruposFragment;
 import com.gestion_academica.Main_Fragments.matriculadoresFragment;
 import com.gestion_academica.Main_Fragments.profesoresFragment;
 
@@ -106,6 +107,10 @@ public class Inicio extends AppCompatActivity implements NavigationView.OnNaviga
 
             };break;
             case R.id.nav_grupos:{
+
+                gruposFragment fragment=new gruposFragment();
+                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frament_container, fragment).addToBackStack("Inicio").commit();
 
             };break;
             case R.id.nav_estudiantes:{

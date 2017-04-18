@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class Matriculadores extends AccesoDatos{
 
-    public Matriculadores() {
+    public Matriculadores(Database db) {
+        super(db);
     }
     
     public int agregar(Matriculador c){
@@ -32,7 +33,7 @@ public class Matriculadores extends AccesoDatos{
         String tableParams = "nombre='%s', telefono='%s', email='%s' where cedula='%s'";
         tableParams = String.format(tableParams, c.getNombre(),c.getTelefono(),c.getEmail(), c.getCedula());
         
-        new Usuarios().actualizar(c.getUsuario());
+        new Usuarios(db).actualizar(c.getUsuario());
         return super.actualizar(tableName, tableParams);
     }
     
@@ -42,7 +43,7 @@ public class Matriculadores extends AccesoDatos{
         obj.setNombre(rs.getString("nombre"));
         obj.setTelefono(rs.getString("telefono"));
         obj.setEmail(rs.getString("email"));
-        Usuario u=new Usuarios().obtener(rs.getString("Usuario_id"));
+        Usuario u=new Usuarios(db).obtener(rs.getString("Usuario_id"));
         obj.setUsuario(u);
         
         

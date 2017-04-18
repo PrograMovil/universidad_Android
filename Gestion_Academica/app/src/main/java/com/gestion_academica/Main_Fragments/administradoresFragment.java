@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -89,7 +90,7 @@ public class administradoresFragment extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.listAdministrador);
-        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarAdministrador);
+        ImageButton botonBuscar=(ImageButton) view.findViewById(R.id.floatingBuscarAdministrador);
         FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarAdministrador);
 
 

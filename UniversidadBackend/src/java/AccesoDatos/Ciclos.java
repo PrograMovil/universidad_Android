@@ -8,6 +8,12 @@ import java.util.ArrayList;
 
 
 public class Ciclos extends AccesoDatos {
+
+    public Ciclos(Database db) {
+        super(db);
+    }
+    
+    
     
     public int agregar(Ciclo c){
         String tableAndParams = "Ciclo(anio,numero,fecha_Inicio,fecha_Finalizacion)";

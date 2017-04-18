@@ -5,6 +5,16 @@
     android:layout_height="match_parent" >
 
 
+    <ImageButton
+        android:id="@+id/floatingBuscarProfesor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        android:background="?android:selectableItemBackground"
+        android:layout_marginStart="33dp"
+        android:layout_alignTop="@+id/textListaP"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:id="@+id/textListaP"
         android:layout_width="match_parent"
@@ -13,8 +23,8 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
-        android:layout_alignTop="@+id/floatingBuscarProfesor"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingAgregarProfesor"
@@ -29,25 +39,13 @@
         android:layout_marginBottom="15dp"
         android:layout_marginRight="10dp"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingBuscarProfesor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-        android:layout_marginTop="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listProfesor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.gestion_academica.Main_Fragments.profesoresFragment"
-    tools:listitem="@layout/fila_profesor"
-    android:layout_below="@+id/textListaP" />
+        tools:listitem="@layout/fila_profesor"
+        android:layout_below="@+id/textListaP" />
 
 
     </RelativeLayout>

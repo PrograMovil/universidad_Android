@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gestion_academica.Fragments_Editar.editarGrupoFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="50dp"
+                android:id="@+id/numeroWidgetGru">
+
+                <EditText
+                    android:id="@+id/numeroGrupo"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Numero"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/cursoGrupoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="180dp"
+                android:text="Curso:"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cursoGrupo"
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/cursoGrupoText"
+                android:layout_marginLeft="57dp"
+                android:layout_alignBottom="@+id/cursoGrupoText"
+                android:text="Funda"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/profesorGrupoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="230dp"
+                android:text="Profesor:"
+                android:singleLine="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profesorGrupo"
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/profesorGrupoText"
+                android:layout_marginLeft="80dp"
+                android:layout_alignBottom="@+id/profesorGrupoText"
+                android:text="Caamano"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cicloGrupoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="280dp"
+                android:text="Ciclo:"
+                android:singleLine="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cicloGrupo"
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/cicloGrupoText"
+                android:layout_marginLeft="50dp"
+                android:layout_alignBottom="@+id/cicloGrupoText"
+                android:text="I 2016"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/horarioGrupoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="330dp"
+                android:text="Horario:"
+                android:singleLine="true"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/horarioGrupo"
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/horarioGrupoText"
+                android:layout_marginLeft="75dp"
+                android:layout_alignBottom="@+id/horarioGrupoText"
+                android:text="L Y M 12pm"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/botonGuardarGrupo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/horarioGrupo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:layout_weight="1"
+                android:text="Guardar" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

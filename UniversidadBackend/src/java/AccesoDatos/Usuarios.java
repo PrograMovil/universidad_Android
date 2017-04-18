@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 
 public class Usuarios extends AccesoDatos{
 
-    public Usuarios() {
+    public Usuarios(Database db) {
+        super(db);
     }
 
     public int agregar(Usuario c){

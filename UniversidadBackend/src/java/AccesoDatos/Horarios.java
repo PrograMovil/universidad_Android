@@ -8,6 +8,11 @@ import java.util.Date;
 
 public class Horarios extends AccesoDatos {
 
+    public Horarios(Database db) {
+        super(db);
+    }
+
+    
     public int agregar(Horario c) {
         String tableAndParams = "Horario(dias,horaInicial,horaFinal)";
         String values = "'%s','%s','%s'";

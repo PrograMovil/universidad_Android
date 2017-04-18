@@ -8,11 +8,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Cursos extends AccesoDatos {
+
+    public Cursos(Database db) {
+        super(db);
+    }
+    
+    
     
     public int agregar(Curso c) throws SQLException{
         String tableAndParams = "Curso(codigo,nombre,creditos,horas_semanales,nivel,ciclo,Carrera_id)";
         String values = "'%s','%s','%s','%s','%s','%s','%s'";
-        values = String.format(values,c.getCodigo(),c.getNombre(),c.getCreditos(),c.getHorasSemanales(),c.getNivel(),c.getCiclo(),new Carreras().obtenerId(c.getCarrera()));
+        values = String.format(values,c.getCodigo(),c.getNombre(),c.getCreditos(),c.getHorasSemanales(),c.getNivel(),c.getCiclo(),new Carreras(db).obtenerId(c.getCarrera()));
         return super.agregar(tableAndParams, values);
     }
     
@@ -27,7 +33,7 @@ public class Cursos extends AccesoDatos {
         String tableName = "curso";
         String tableParams = "nombre='%s', creditos='%s', horas_semanales='%s', nivel='%s', ciclo='%s' where codigo='%s'";
         tableParams = String.format(tableParams,c.getNombre(),c.getCreditos(),c.getHorasSemanales(),c.getNivel(),c.getCiclo(), c.getCodigo());
-        new Carreras().actualizar(c.getCarrera());
+        new Carreras(db).actualizar(c.getCarrera());
         return super.actualizar(tableName, tableParams);
     }
     
@@ -39,7 +45,7 @@ public class Cursos extends AccesoDatos {
         obj.setHorasSemanales(rs.getInt("horas_semanales"));
         obj.setNivel(rs.getString("nivel"));
         obj.setCiclo(rs.getString("ciclo"));
-        obj.setCarrera(new Carreras().obtenerPorId(rs.getInt("Carrera_id")));
+        obj.setCarrera(new Carreras(db).obtenerPorId(rs.getInt("Carrera_id")));
         
         
         return obj;
@@ -100,7 +106,7 @@ public class Cursos extends AccesoDatos {
         String tableName = "Curso";
         String param = "Carrera_id = '%s'";
         
-        param = String.format(param, new Carreras().obtenerId(carrera));
+        param = String.format(param, new Carreras(db).obtenerId(carrera));
         ResultSet rs = super.obtener(tableName, param);
         ArrayList<Curso> lista=new ArrayList();
         while (rs.next()) {

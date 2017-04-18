@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 
 public class Carreras extends AccesoDatos {
+
+    public Carreras(Database db) {
+        super(db);
+    }
     
     public int agregar(Carrera c){
         String tableAndParams = "Carrera(codigo,nombre,titulo)";

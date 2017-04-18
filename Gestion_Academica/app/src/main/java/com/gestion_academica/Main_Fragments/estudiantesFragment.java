@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -91,7 +92,7 @@ public class estudiantesFragment extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         RecyclerView recyclerV=(RecyclerView) view.findViewById(R.id.listEstudiante);
-        FloatingActionButton botonBuscar=(FloatingActionButton) view.findViewById(R.id.floatingBuscarEstudiante);
+        ImageButton botonBuscar=(ImageButton) view.findViewById(R.id.floatingBuscarEstudiante);
         FloatingActionButton botonAgregar=(FloatingActionButton) view.findViewById(R.id.floatingAgregarEstudiante);
 
         botonAgregar.setOnClickListener(new View.OnClickListener() {

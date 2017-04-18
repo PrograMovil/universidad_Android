@@ -8,19 +8,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Estudiante_Curso extends AccesoDatos{
+
+    public Estudiante_Curso(Database db) {
+        super(db);
+    }
+    
     
     
     public int agregar(Estudiante est, Curso cur) throws SQLException{
         String tableAndParams = "Estudiante_has_Curso(Estudiante_cedula,Curso_id)";
         String values = "'%s','%s'";
-        values = String.format(values,est.getCedula(),new Cursos().obtenerId(cur));
+        values = String.format(values,est.getCedula(),new Cursos(db).obtenerId(cur));
         return super.agregar(tableAndParams, values);
     }
     
     public int eliminar(Estudiante est, Curso cur) throws SQLException{
         String tableName = "Estudiante_has_Curso";
         String query = "Estudiante_cedula='%s' and Curso_id='%s'";
-        query = String.format(query, est.getCedula(), new Cursos().obtenerId(cur));
+        query = String.format(query, est.getCedula(), new Cursos(db).obtenerId(cur));
         return super.eliminar(tableName, query);
     }
     
@@ -35,7 +40,7 @@ public class Estudiante_Curso extends AccesoDatos{
         ArrayList<Curso> lista=new ArrayList();
         while (rs.next()) {
             int idCurso=rs.getInt("Curso_id");
-            lista.add(new Cursos().obtenerPorId(idCurso));
+            lista.add(new Cursos(db).obtenerPorId(idCurso));
         }
         return lista;
     }
@@ -44,11 +49,11 @@ public class Estudiante_Curso extends AccesoDatos{
     public ArrayList<Estudiante> obtenerEstudiantesDeCurso(Curso cur) throws  Exception{
         String tableName = "Estudiante_has_Curso";
         String param = "Curso_id = '%s'";
-        param = String.format(param, new Cursos().obtenerId(cur));
+        param = String.format(param, new Cursos(db).obtenerId(cur));
         ResultSet rs = super.obtener(tableName, param);
         ArrayList<Estudiante> lista=new ArrayList();
         while (rs.next()) {
-            lista.add(new Estudiantes().obtener(rs.getString("Estudiante_cedula")));
+            lista.add(new Estudiantes(db).obtener(rs.getString("Estudiante_cedula")));
         }
         return lista;
     }

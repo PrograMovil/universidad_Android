@@ -8,20 +8,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Grupos extends AccesoDatos {
+
+    public Grupos(Database db) {
+        super(db);
+    }
+    
     
     public int agregar(Grupo c) throws SQLException, Exception{
         String query = "'%s','%s','%s','%s','%s','%s'";
         String tableAndParams="Grupo(numero,Horario_id,Curso_id,Profesor_cedula,Ciclo_anio,Ciclo_numero)";
         
-        Horarios horario=new Horarios();
+        Horarios horario=new Horarios(db);
         horario.agregar(c.getHorario());
         if(horario.obtener(c.getHorario())==null)
             horario.agregar(c.getHorario());
-        Ciclos ciclo=new Ciclos();
+        Ciclos ciclo=new Ciclos(db);
         if(ciclo.obtener(c.getCiclo())==null)
             ciclo.agregar(c.getCiclo());
         
-        query = String.format(query,c.getNumero(),horario.obtenerId(c.getHorario()),new Cursos().obtenerId(c.getCurso()),c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
+        query = String.format(query,c.getNumero(),horario.obtenerId(c.getHorario()),new Cursos(db).obtenerId(c.getCurso()),c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
         return super.agregar(tableAndParams, query);
     }
     
@@ -36,14 +41,14 @@ public class Grupos extends AccesoDatos {
         String tableName = "Grupo";
         String tableParams = "numero = '%s',Horario_id='%s', Curso_id='%s', Profesor_cedula='%s', Ciclo_anio='%s', Ciclo_numero='%s' where id='%s'";
         
-        Horarios horarios=new Horarios();
+        Horarios horarios=new Horarios(db);
         if(horarios.obtener(c.getHorario())==null)
             horarios.agregar(c.getHorario());
-        Ciclos ciclo=new Ciclos();
+        Ciclos ciclo=new Ciclos(db);
         if(ciclo.obtener(c.getCiclo())==null)
             ciclo.agregar(c.getCiclo());
         
-        tableParams = String.format(tableParams, c.getNumero(), new Horarios().obtenerId(c.getHorario()), new Cursos().obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero(), c.getId());
+        tableParams = String.format(tableParams, c.getNumero(), new Horarios(db).obtenerId(c.getHorario()), new Cursos(db).obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero(), c.getId());
         return super.actualizar(tableName, tableParams);
     }
     
@@ -52,12 +57,12 @@ public class Grupos extends AccesoDatos {
         
         obj.setId(rs.getInt("id"));
         obj.setNumero(rs.getInt("numero"));
-        obj.setHorario(new Horarios().obtenerPorId(rs.getInt("Horario_id")));
-        obj.setCurso(new Cursos().obtenerPorId(rs.getInt("id")));
-        obj.setProfesor(new Profesores().obtener(rs.getString("Profesor_cedula")));
+        obj.setHorario(new Horarios(db).obtenerPorId(rs.getInt("Horario_id")));
+        obj.setCurso(new Cursos(db).obtenerPorId(rs.getInt("id")));
+        obj.setProfesor(new Profesores(db).obtener(rs.getString("Profesor_cedula")));
         int anio=rs.getInt("Ciclo_anio");
             String num=rs.getString("Ciclo_numero");
-            obj.setCiclo(new Ciclos().obtenerPorAnioYNumero(anio,num));
+            obj.setCiclo(new Ciclos(db).obtenerPorAnioYNumero(anio,num));
         return obj;
     }
     
@@ -90,7 +95,7 @@ public class Grupos extends AccesoDatos {
         
         String tablename="Grupo";
         String param2 = "numero = '%s' and Horario_id = '%s' and Curso_id = '%s' and Profesor_cedula = '%s' and Ciclo_anio='%s' and Ciclo_numero='%s'";
-        param2 = String.format(param2, c.getNumero(), new Horarios().obtenerId(c.getHorario()), new Cursos().obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
+        param2 = String.format(param2, c.getNumero(), new Horarios(db).obtenerId(c.getHorario()), new Cursos(db).obtenerId(c.getCurso()), c.getProfesor().getCedula(),c.getCiclo().getAnio(),c.getCiclo().getNumero());
         ResultSet rs2 = super.obtenerId(tablename, param2);
         int id=0;
         if (rs2.next()) {
@@ -112,12 +117,12 @@ public class Grupos extends AccesoDatos {
             Grupo obj = new Grupo();
             obj.setId(rs.getInt("id"));
             obj.setNumero(rs.getInt("numero"));
-            obj.setHorario(new Horarios().obtenerPorId(rs.getInt("Horario_id")));
-            obj.setCurso(new Cursos().obtenerPorId(rs.getInt("id")));
-            obj.setProfesor(new Profesores().obtener(rs.getString("Profesor_cedula")));
+            obj.setHorario(new Horarios(db).obtenerPorId(rs.getInt("Horario_id")));
+            obj.setCurso(new Cursos(db).obtenerPorId(rs.getInt("id")));
+            obj.setProfesor(new Profesores(db).obtener(rs.getString("Profesor_cedula")));
             int anio=rs.getInt("Ciclo_anio");
             String num=rs.getString("Ciclo_numero");
-            obj.setCiclo(new Ciclos().obtenerPorAnioYNumero(anio,num));
+            obj.setCiclo(new Ciclos(db).obtenerPorAnioYNumero(anio,num));
             lista.add(obj);
             
         }
@@ -128,19 +133,19 @@ public class Grupos extends AccesoDatos {
         
         String tableName = "Grupo";
         String param = "Curso_id = '%s'";
-        param = String.format(param, new Cursos().obtenerId(curso));
+        param = String.format(param, new Cursos(db).obtenerId(curso));
         ResultSet rs = super.obtener(tableName, param);
         ArrayList<Grupo> lista=new ArrayList<>();
         while (rs.next()) {
             Grupo obj = new Grupo();
             obj.setId(rs.getInt("id"));
             obj.setNumero(rs.getInt("numero"));
-            obj.setHorario(new Horarios().obtenerPorId(rs.getInt("Horario_id")));
-            obj.setCurso(new Cursos().obtenerPorId(rs.getInt("Curso_id")));
-            obj.setProfesor(new Profesores().obtener(rs.getString("Profesor_cedula")));
+            obj.setHorario(new Horarios(db).obtenerPorId(rs.getInt("Horario_id")));
+            obj.setCurso(new Cursos(db).obtenerPorId(rs.getInt("Curso_id")));
+            obj.setProfesor(new Profesores(db).obtener(rs.getString("Profesor_cedula")));
             int anio=rs.getInt("Ciclo_anio");
             String num=rs.getString("Ciclo_numero");
-            obj.setCiclo(new Ciclos().obtenerPorAnioYNumero(anio,num));
+            obj.setCiclo(new Ciclos(db).obtenerPorAnioYNumero(anio,num));
             lista.add(obj);
             
         }

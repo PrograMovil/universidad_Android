@@ -2,24 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.gestion_academica.Main_Fragments.carrerasFragment">
+    android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/floatingBuscarCarrera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-        android:background="?android:selectableItemBackground"
-        android:layout_marginStart="33dp"
-        android:layout_alignTop="@+id/textListaP"
-        android:layout_alignParentStart="true" />
+
 
     <TextView
         android:id="@+id/textListaP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lista de Carreras"
+        android:text="Lista de Grupos"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="18sp"
@@ -27,7 +18,7 @@
         android:layout_alignParentTop="true"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingAgregarCarrera"
+        android:id="@+id/floatingAgregarGrupo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -40,14 +31,12 @@
         android:layout_marginRight="10dp"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/listCarrera"
+        android:id="@+id/listGrupo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.gestion_academica.Main_Fragments.carrerasFragment"
-        tools:listitem="@layout/fila_carrera"
+        tools:context="com.gestion_academica.Main_Fragments.gruposFragment"
+        tools:listitem="@layout/fila_grupo"
         android:layout_below="@+id/textListaP" />
-
-
 
 
 </RelativeLayout>

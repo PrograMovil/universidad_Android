@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Estudiante_Grupo extends AccesoDatos{
+
+    public Estudiante_Grupo(Database db) {
+        super(db);
+    }
     
     
     
@@ -36,7 +40,7 @@ public class Estudiante_Grupo extends AccesoDatos{
         ArrayList<Grupo> lista=new ArrayList();
         while (rs.next()) {
             int idGrupo=rs.getInt("Grupo_id");
-            lista.add(new Grupos().obtenerPorId(idGrupo));
+            lista.add(new Grupos(db).obtenerPorId(idGrupo));
         }
         return lista;
     }
@@ -49,7 +53,7 @@ public class Estudiante_Grupo extends AccesoDatos{
         ResultSet rs = super.obtener(tableName, param);
         ArrayList<Estudiante> lista=new ArrayList();
         while (rs.next()) {
-            lista.add(new Estudiantes().obtener(rs.getString("Estudiante_cedula")));
+            lista.add(new Estudiantes(db).obtener(rs.getString("Estudiante_cedula")));
         }
         return lista;
     }
